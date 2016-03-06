@@ -1,7 +1,7 @@
 from kivy.app import App
 from kivy.uix.widget import Widget
 from kivy.uix.scatter import Scatter
-from kivy.properties import NumericProperty, ObjectProperty
+from kivy.properties import NumericProperty, ObjectProperty, StringProperty
 from Edge import Edge
 from kivy.lang import Builder
 Builder.load_file('GraphPanel.kv')
@@ -17,6 +17,19 @@ class Vertex(Widget):
 
     incomingEdges = []
     outgoingEdges = []
+
+    name = StringProperty("")
+    info = StringProperty("")
+
+    def setName(self, name):
+        self.name = name
+
+    def setInfo(self, info):
+        self.info = info
+
+    def setNameInfo(self, name, info):
+        self.name = name
+        self.info = info
 
     def setRGB(self, red, green, blue):
         self.red = red
