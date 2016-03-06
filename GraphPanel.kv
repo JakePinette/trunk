@@ -1,0 +1,32 @@
+<GraphPanel>:
+    canvas:
+        Color:
+            rgb: 1, 1, 1
+        Rectangle:
+            pos: 0,0
+            size: self.width, self.height
+
+<Edge>
+    canvas:
+        Color:
+            rgba: self.red, self.green, self.blue, self.alpha
+        Line:
+            width: self.width
+            points: self.points
+
+<Vertex>:
+    size: (self.radius*2, self.radius*2)
+    canvas:
+        Color:
+            rgba: self.red, self.green, self.blue, self.alpha
+        Ellipse:
+            pos: self.pos
+            size: self.size
+
+<TestPanel>:
+    canvas:
+        Color:
+            rgb: 1, 1, 1
+        Rectangle
+            pos: 0,0
+            size: self.width, self.height
