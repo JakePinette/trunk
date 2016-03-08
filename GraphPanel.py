@@ -13,14 +13,6 @@ class GraphPanel(Widget):
     listOfEdges = ObjectProperty( [] )
     currentEdge = 0
 
-  #  def __init__(self, numVertices):
-   #     for x in range(0, numVertices):
-    #        vertex = Vertex()
-     #       vertex.setAlpha(0)
-         #   self.add_widget(vertex)
-      #      self.listOfVertices.append(vertex)
-      #  print(len(self.listOfVertices))
-
     def newGraph(self, numVertices):
         for x in range(0, numVertices):
             vertex = Vertex()
@@ -45,18 +37,16 @@ class GraphPanel(Widget):
         self.listOfVertices[vertexFromIndex].addOutgoingEdge(self.currentEdge)
         self.listOfVertices[vertexToIndex].addIncomingEdge(self.currentEdge)
         self.currentEdge = self.currentEdge + 1
-        
-    
-  #  def addVertexArray(self, vertexArray):
-   #     for vertex in vertexArray:
-    #        self.listOfVertices.append(vertex)
-     #       self.add_widget(vertex)
 
- #   def addEdgeArray(self, edgeArray):
-  #      for edge in edgeArray:
-   #         self.listOfEdges.append(edge)
-    #        self.add_widget(edge)
-
+    def printVertexEdges(self):
+        for v in range(0,len(self.listOfVertices)):
+            print("vertex Number")
+            print(v)
+            print("edges incoming")
+            print(self.listOfVertices[v].getIncomingEdgeIndexes())
+            print("edges outgoing")
+            print(self.listOfVertices[v].getOutgoingEdgeIndexes())
+            
     def on_touch_down(self, touch):
         for vertex in self.listOfVertices:
             if vertex.collide_point(touch.x, touch.y):
@@ -68,24 +58,28 @@ class GraphPanel(Widget):
         
     def on_touch_move(self, touch):
         if self.currentVertex != None:
-          # self.currentVertex.setPosition(touch.x, touch.y)
-            
+            self.currentVertex.setPosition(touch.x, touch.y)
             for e in self.currentVertex.getIncomingEdgeIndexes():
                 self.listOfEdges[e].changeToCoordinates(touch.x, touch.y)
                 
-            for e in self.currentVertex.getOutgoingEdgeIndexes():
-                self.listOfEdges[e].changeFromCoordinates(touch.x, touch.y)
+            for j in self.currentVertex.getOutgoingEdgeIndexes():
+                self.listOfEdges[j].changeFromCoordinates(touch.x, touch.y)
 
 
 class GraphPanelApp(App):
     def build(self):
         graphPanel = GraphPanel()
-        graphPanel.newGraph(3)
+        graphPanel.newGraph(4)
         graphPanel.setVertexPosition(0, 100, 100)
         graphPanel.setVertexPosition(1, 200, 200)
-        graphPanel.setVertexPosition(2,300, 100)
+        graphPanel.setVertexPosition(2, 300, 100)
+        graphPanel.setVertexPosition(3, 200, 300)
         graphPanel.addEdge(0, 1, 4)
         graphPanel.addEdge(1, 2, 5)
+        graphPanel.addEdge(2, 1, 6)
+        graphPanel.addEdge(1, 3, 7)
+        graphPanel.addEdge(0, 3, 8)
+        
         
        # vertex1 = Vertex(pos = (100,100), radius = 25)
   #      vertex2 = Vertex(pos = (200,200), radius = 25)
