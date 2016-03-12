@@ -26,12 +26,10 @@ class Edge(Scatter):
     def changeFromCoordinates(self, newX, newY):
         self.x = newX
         self.y = newY
-        #points = (self.x, self.y, self.xx, self.yy)
         
     def changeToCoordinates(self, newX, newY):
         self.xx = newX
         self.yy = newY
-        #points = (self.x, self.y, self.xx, self.yy)
         
     def setVertices(self, vertexFrom, vertexTo):
         self.x = vertexFrom.getX()

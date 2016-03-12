@@ -1,7 +1,9 @@
 from kivy.app import App
 from kivy.uix.widget import Widget
-from kivy.uix.scatter import Scatter
-from kivy.properties import NumericProperty, ListProperty, StringProperty
+from kivy.uix.label import Label
+from kivy.properties import NumericProperty, ListProperty
+from kivy.properties import BooleanProperty, StringProperty
+from kivy.properties import ObjectProperty
 from Edge import Edge
 from kivy.lang import Builder
 Builder.load_file('GraphPanel.kv')
@@ -20,7 +22,22 @@ class Vertex(Widget):
 
     name = StringProperty("")
     info = StringProperty("")
+    label = ObjectProperty( None )
 
+    clickState = BooleanProperty(False)
+
+    #Getter setter for vertex radius
+    def setRadius(self, radius):
+        x = self.center_x
+        y = self.center_y
+        self.radius = radius
+        self.center_x = x
+        self.center_y = y
+
+    def getRadius(self):
+        return self.radius
+    
+    #Getter/Setters for Name/Info
     def setName(self, name):
         self.name = name
 
@@ -31,6 +48,21 @@ class Vertex(Widget):
         self.name = name
         self.info = info
 
+    def getName(self):
+        return self.name
+
+    def getInfo(self):
+        return self.info
+
+    def setNameVisible(self):
+        self.label = Label(color=(0,0,0,1), text=self.name, center_x = self.center_x, center_y = self.center_y)
+        self.add_widget(self.label)
+
+    def setNameInvisible(self):
+        self.remove_widget(self.label)
+        self.label = None
+
+    #Getter/Setter For Colors
     def setRGB(self, red, green, blue):
         self.red = red
         self.green = green
@@ -54,7 +86,39 @@ class Vertex(Widget):
     def setAlpha(self, alpha):
         self.alpha = alpha
 
+    def getRed(self):
+        return self.red
+
+    def getGreen(self):
+        return self.green
+
+    def getBlue(self):
+        return self.blue
+
+    def getAlpha(self):
+        return self.alpha
+
+    #Vertex clickstate for touch events
+    def click(self):
+        self.clickState = True
+
+    def unClick(self):
+        self.clickState = False
+
+    def isClicked(self):
+        return self.clickState
+
+    #Getter/Setter for vertex Position
     def setPosition(self, x, y):
+        if self.isClicked():
+            self.center_x = x
+            self.center_y = y
+
+            if self.label != None:
+                self.label.center_x = x
+                self.label.center_y = y
+
+    def setInitialPosition(self,x,y):
         self.center_x = x
         self.center_y = y
 
@@ -64,6 +128,7 @@ class Vertex(Widget):
     def getY(self):
         return self.center_y
 
+    #Add/Get incoming/outgoing edges
     def addIncomingEdge(self, edgeIndex):
         self.incomingEdges.append(edgeIndex)
 

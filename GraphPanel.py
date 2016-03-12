@@ -1,6 +1,6 @@
 from kivy.app import App
 from kivy.uix.widget import Widget
-from kivy.properties import ObjectProperty, NumericProperty
+from kivy.properties import ListProperty, NumericProperty
 from Edge import Edge
 from Vertex import Vertex
 from kivy.lang import Builder
@@ -8,12 +8,25 @@ Builder.load_file('GraphPanel.kv')
 
 class GraphPanel(Widget):
 
-    currentVertex = ObjectProperty( None )
-    listOfVertices = ObjectProperty( [] )
-    listOfEdges = ObjectProperty( [] )
+    currentVertex = NumericProperty( -1 )
+    listOfVertices = ListProperty( [] )
+    listOfEdges = ListProperty( [] )
     currentEdge = 0
 
     def newGraph(self, numVertices):
+        #First, tear down the old graph
+        self.currentVertex = -1
+        self.currentEdge = 0
+        for e in range(0, len(self.listOfEdges)):
+            self.remove_widget(self.listOfEdges[e])
+
+        for v in range(0, len(self.listOfVertices)):
+            self.remove_widget(self.listOfVertices[v])
+            
+        self.listOfEdges = []
+        self.listOfVertices = []
+
+        #Now initialize the new graph
         for x in range(0, numVertices):
             vertex = Vertex()
             self.listOfVertices.append(vertex)
@@ -25,8 +38,16 @@ class GraphPanel(Widget):
     def modifyVertex(self, vertexNo, name, info):
         pass
 
+    def setNamesVisible(self):
+        for v in range(0, len(self.listOfVertices)):
+            self.listOfVertices[v].setNameVisible()
+
+    def setNamesInvisible(self):
+        for v in range(0, len(self.listOfVertices)):
+            self.listOfVertices[v].setNameInvisible()
+
     def setVertexPosition(self, vertexNo, x, y):
-        self.listOfVertices[vertexNo].setPosition(x,y)
+        self.listOfVertices[vertexNo].setInitialPosition(x,y)
         self.listOfVertices[vertexNo].setAlpha(1)
 
     def addEdge(self, vertexFromIndex, vertexToIndex, weight):
@@ -48,23 +69,28 @@ class GraphPanel(Widget):
             print(self.listOfVertices[v].getOutgoingEdgeIndexes())
             
     def on_touch_down(self, touch):
-        for vertex in self.listOfVertices:
-            if vertex.collide_point(touch.x, touch.y):
-                self.currentVertex = vertex
+        for v in range(0, len(self.listOfVertices)):
+            if self.listOfVertices[v].collide_point(touch.x, touch.y):
+                self.currentVertex = v
+                self.listOfVertices[v].click()
                 break
             
-    def ont_touch_up(self, touch):
-        self.currentVertex = ObjectProperty(None)
+    def on_touch_up(self, touch):
+        if self.currentVertex != (-1):
+            self.listOfVertices[self.currentVertex].unClick()
+            self.currentVertex = -1
         
     def on_touch_move(self, touch):
-        if self.currentVertex != None:
-            self.currentVertex.setPosition(touch.x, touch.y)
-            for e in self.currentVertex.getIncomingEdgeIndexes():
-                self.listOfEdges[e].changeToCoordinates(touch.x, touch.y)
+        if self.currentVertex != (-1):
+            v = self.currentVertex
+            if self.listOfVertices[v].isClicked():
+                self.listOfVertices[v].setPosition(touch.x, touch.y)
+                for e in self.listOfVertices[v].getIncomingEdgeIndexes():
+                    self.listOfEdges[e].changeToCoordinates(touch.x, touch.y)
                 
-            for j in self.currentVertex.getOutgoingEdgeIndexes():
-                self.listOfEdges[j].changeFromCoordinates(touch.x, touch.y)
-
+                for j in self.listOfVertices[v].getOutgoingEdgeIndexes():
+                    self.listOfEdges[j].changeFromCoordinates(touch.x, touch.y)
+    
 
 class GraphPanelApp(App):
     def build(self):
@@ -79,24 +105,12 @@ class GraphPanelApp(App):
         graphPanel.addEdge(2, 1, 6)
         graphPanel.addEdge(1, 3, 7)
         graphPanel.addEdge(0, 3, 8)
-        
-        
-       # vertex1 = Vertex(pos = (100,100), radius = 25)
-  #      vertex2 = Vertex(pos = (200,200), radius = 25)
-   #     vertex3 = Vertex(pos = (300,100), radius = 25)
-    #    edge1 = Edge()
-     #   edge2 = Edge()
-      #  edge1.setVertices(vertex1, vertex2)
-       # edge2.setVertices(vertex2, vertex3)
-    #    edge1.changeFromCoordinates(0,0)
-     #   edge2.changeToCoordinates(500,100)
-    #    vArray = [vertex1, vertex2, vertex3]
-    #    eArray = [edge1, edge2]
 
-    #    print(vertex2.getEdgeInc())
-     #   graphPanel.addVertexArray(vArray)
-       # graphPanel.addEdgeArray(eArray)
-        
+        graphPanel.listOfVertices[1].setRadius(10)
+        graphPanel.listOfVertices[0].setRGB(1,0,0)
+        graphPanel.listOfVertices[2].setName("Hello")
+        graphPanel.setNamesVisible()
+
         return graphPanel
 
 if __name__ == '__main__':
