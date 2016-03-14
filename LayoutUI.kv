@@ -1,18 +1,21 @@
 <Test>:
-    size_hint: .5, .5
+    size_hint: 0.5, 0.5
     pos_hint: {'center_x': .5, 'center_y': .5}
     do_default_tab: False
 
     TabbedPanelItem:
         text: 'Node Tab'
-        Label:
-            text: 'Node Tab content area'
-        Button:
+        BoxLayout:
+            orientation: 'vertical'
+            Label:
+                text: 'Node Tab content area'
+            Button:
                 text: 'Button that does nothing'
                 
     TabbedPanelItem:
         text: 'Graph Tab'
         BoxLayout:
+            orientation: 'vertical'
             Label:
                 text: 'Graph Tab content area'
             Button:

@@ -9,25 +9,15 @@ from kivy.uix.button import Button
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.anchorlayout import AnchorLayout
+from kivy.lang import Builder
+from GraphPanel import GraphPanel
 
+Builder.load_file("LayoutUI.kv")
+#loading the graph capabilities kv file.
+Builder.load_file("GraphPanel.kv")
 
-#class ToolBar(TabbedPanel):
- #   def build(self):
-  #      tabPanel = TabbedPanel()
-        
-        #creating the tabs
-   #     graphTab = TabbedPanelHeader(text='Graph')
-    #    graphTab.content = Button(text='Content')
-#
- #       nodeTab = TabbedPanelHeader(text='Node')
-  #      nodeTab.content = Button(text='Node content')
-
-        
-   #     tabPanel.add_widget(nodeTab)
-    #    tabPanel.add_widget(graphTab)
-
-     #   return tabPanel
-
+class Test(TabbedPanel):
+    pass
         
 class BuildLayout(App):
     def build(self):
@@ -39,12 +29,32 @@ class BuildLayout(App):
         ToolBarHolder = AnchorLayout(anchor_x='right', andchor_y='bottom')
         
         TopBar = BoxLayout(size_hint=(0.75, 1))
+
+        #this is where the graph visualization goes
+        graphPanel = GraphPanel(size_hint=(0.75, 0.95))
         
-        Vis = Button(text='Graph area', size_hint=(0.75, 0.95))
-        
-        ToolBar = TabbedPanel(size_hint=(0.25, 1))
+        ToolBar = Test(size_hint=(0.25, 1))
 
         btntest = Button(text='topBar')
+
+        #~~~~~~~~~~~
+        graphPanel.newGraph(4)
+        graphPanel.setVertexPosition(0, 100, 100)
+        graphPanel.setVertexPosition(1, 200, 200)
+        graphPanel.setVertexPosition(2, 300, 100)
+        graphPanel.setVertexPosition(3, 200, 300)
+        graphPanel.addEdge(0, 1, 4)
+        graphPanel.addEdge(1, 2, 5)
+        graphPanel.addEdge(2, 1, 6)
+        graphPanel.addEdge(1, 3, 7)
+        graphPanel.addEdge(0, 3, 8)
+
+        graphPanel.listOfVertices[1].setRadius(10)
+        graphPanel.listOfVertices[0].setRGB(1,0,0)
+        graphPanel.listOfVertices[2].setName("Hello")
+        graphPanel.setNamesVisible()
+
+        #~~~~~~~~~~~
    
        
         layout.add_widget(TopBarHolder)
@@ -56,7 +66,7 @@ class BuildLayout(App):
         ToolBarHolder.add_widget(ToolBar)
         TopBarHolder.add_widget(TopBar)
         TopBar.add_widget(btntest)
-        RemainingHolder.add_widget(Vis)
+        RemainingHolder.add_widget(graphPanel)
         
         return layout
 
