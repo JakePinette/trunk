@@ -12,32 +12,43 @@ from kivy.uix.anchorlayout import AnchorLayout
 from kivy.lang import Builder
 from GraphPanel import GraphPanel
 
+#loading the LayoutUI specifications
 Builder.load_file("LayoutUI.kv")
 #loading the graph capabilities kv file.
 Builder.load_file("GraphPanel.kv")
 
+#Initializing the Test class (Renamed later)
 class Test(TabbedPanel):
     pass
+
         
 class BuildLayout(App):
     def build(self):
+        #vvvv Basic Layouts vvvv
         layout = AnchorLayout(anchor_x='center', anchor_y='top')
 
         TopBarHolder = AnchorLayout(anchor_x='left', anchor_y='top',
                                     size_hint=(1, 0.05))
         RemainingHolder = AnchorLayout(anchor_x='left', anchor_y='bottom')
         ToolBarHolder = AnchorLayout(anchor_x='right', andchor_y='bottom')
-        
+        #^^^^ Basic Layouts ^^^^
+
+        #this is the top bar
         TopBar = BoxLayout(size_hint=(0.75, 1))
 
-        #this is where the graph visualization goes
-        graphPanel = GraphPanel(size_hint=(0.75, 0.95))
-        
+        #this is the Tabbed Box on the right side
         ToolBar = Test(size_hint=(0.25, 1))
 
-        btntest = Button(text='topBar')
 
-        #~~~~~~~~~~~
+        #button used to test (temporary)
+        btntest = Button(text='topBar')
+        
+        
+        #this is where the graph visualization goes
+        graphPanel = GraphPanel(size_hint=(0.75, 0.95))
+
+
+        #vvvv GraphPanel settings vvvv
         graphPanel.newGraph(4)
         graphPanel.setVertexPosition(0, 100, 100)
         graphPanel.setVertexPosition(1, 200, 200)
@@ -53,20 +64,21 @@ class BuildLayout(App):
         graphPanel.listOfVertices[0].setRGB(1,0,0)
         graphPanel.listOfVertices[2].setName("Hello")
         graphPanel.setNamesVisible()
-
-        #~~~~~~~~~~~
+        #^^^^ GraphPanel settings ^^^^ 
    
-       
+
+        #vvvv Adding everything to the UI vvvv
         layout.add_widget(TopBarHolder)
         layout.add_widget(RemainingHolder)
         layout.add_widget(ToolBarHolder)
-        
         
         
         ToolBarHolder.add_widget(ToolBar)
         TopBarHolder.add_widget(TopBar)
         TopBar.add_widget(btntest)
         RemainingHolder.add_widget(graphPanel)
+        #^^^^ Adding everything to the UI ^^^^
+
         
         return layout
 
@@ -75,3 +87,4 @@ class BuildLayout(App):
 if __name__ == "__main__":
     app = BuildLayout()
     app.run()
+
