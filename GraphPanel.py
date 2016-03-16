@@ -11,8 +11,12 @@ class GraphPanel(Widget):
     currentVertex = NumericProperty( -1 )
     listOfVertices = ListProperty( [] )
     listOfEdges = ListProperty( [] )
+    red = NumericProperty(1)
+    green = NumericProperty(1)
+    blue = NumericProperty(1)
     currentEdge = 0
 
+    #NEW GRAPH
     def newGraph(self, numVertices):
         #First, tear down the old graph
         self.currentVertex = -1
@@ -29,15 +33,166 @@ class GraphPanel(Widget):
         #Now initialize the new graph
         for x in range(0, numVertices):
             vertex = Vertex()
+            vertex.setName(str(x))
             self.listOfVertices.append(vertex)
             self.add_widget(vertex)
+
+    #WEIGHT OF EDGES
+
+    def getEdgeWeight(edgeNo):
+        return self.listOfEdges[edgeNo].getWeight()
+
+    def setEdgeWeight(edgeNo, weight):
+        self.listOfEdges[edgeNo].setWeight(weight)
         
-    def modifyVertex(self, vertexNo, name):
-        pass
+    #NAME/INFO OF VERTICES
+    def setVertexName(self, vertexNo, name):
+        self.listOfVertices[vertexNo].setName(name)
 
-    def modifyVertex(self, vertexNo, name, info):
-        pass
+    def setVertexNameInfo(self, vertexNo, name, info):
+        self.listOfVertices[vertexNo].setNameInfo(name, info)
 
+    def setVertexInfo(self, vertexNo, info):
+        self.listOfVertices[vertexNo].setInfo(info)
+
+    def getVertexName(self, vertexNo):
+        return self.listOfVertices[vertexNo].getName()
+
+    def getVertexInfo(self, vertexNo):
+        return self.listOfVertices[vertexNo].getName()
+
+    #SINGLE VERTEX COLOR
+    def setVertexRed(self, vertexNo, red):
+        self.listOfVertices[vertexNo].setRed(red)
+        
+    def setVertexGreen(self, vertexNo, green):
+        self.listOfVertices[vertexNo].setGreen(green)
+        
+    def setVertexBlue(self, vertexNo, blue):
+        self.listOfVertices[vertexNo].setBlue(blue)
+        
+    def setVertexAlpha(self, vertexNo, alpha):
+        self.listOfVertices[vertexNo].setAlpha(alpha)
+
+    def setVertexRGB(self, vertexNo, red, green, blue):
+        self.listOfVertices[vertexNo].setRGB(red, green, blue)
+        
+    def setVertexRGBA(self, vertexNo, red, green, blue, alpha):
+        self.listOfVertices[vertexNo].setRGBA(red, green, blue, alpha)
+        
+    def getVertexRed(self, vertexNo):
+        return self.listOfVertices[vertexNo].getRed()
+    
+    def getVertexGreen(self, vertexNo):
+        return self.listOfVertices[vertexNo].getGreen()
+    
+    def getVertexBlue(self, vertexNo):
+        return self.listOfVertices[vertexNo].getBlue()
+
+    def getVertexAlpha(self, vertexNo):
+        return self.listOfVertices[vertexNo].getAlpha()
+
+    #MODIFY COLOR FOR ALL VERTICES
+    def setAllVertexRed(self, red):
+        for v in range(0, len(self.listOfVertices)):
+            self.listOfVertices[v].setRed(red)
+            
+    def setAllVertexGreen(self, green):
+        for v in range(0, len(self.listOfVertices)):
+            self.listOfVertices[v].setGreen(green)
+        
+    def setAllVertexBlue(self, blue):
+        for v in range(0, len(self.listOfVertices)):
+            self.listOfVertices[v].setBlue(blue)
+            
+    def setAllVertexAlpha(self, alpha):
+        for v in range(0, len(self.listOfVertices)):
+            self.listOfVertices[v].setAlpha(alpha)
+            
+    def setAllVertexRGB(self, red, green, blue):
+        for v in range(0, len(self.listOfVertices)):
+            self.listOfVertices[v].setRGB(red, green, blue)
+            
+    def setAllVertexRGBA(self, red, green, blue, alpha):
+        for v in range(0, len(self.listOfVertices)):
+            self.listOfVertices[v].setRGBA(red, green, blue, alpha)
+        
+    
+    #MODIFY BACKGROUND COLOR
+    def setBackgroundRed(self, red):
+        self.red = red
+        
+    def setBackgroundGreen(self, green):
+        self.green = green
+        
+    def setBackgroundBlue(self, blue):
+        self.blue = blue
+        
+    def setBackgroundRGB(self, red, green, blue):
+        self.red = red
+        self.green = green
+        self.blue = blue
+        
+    def getBackgroundRed(self):
+        return self.red
+    
+    def getBackgroundGreen(self):
+        return self.green
+    
+    def getBackgroundBlue(self):
+        return self.blue
+
+    #MODIFY EDGE COLOR
+    def setEdgeRed(self, edgeNo, red):
+        self.listOfEdges[edgeNo].setRed(red)
+
+    def setEdgeGreen(self, edgeNo, green):
+        self.listOfEdges[edgeNo].setGreen(green)
+
+    def setEdgeBlue(self, edgeNo, blue):
+        self.listOfEdges[edgeNo].setBlue(blue)
+
+    def setEdgeRGB(self, edgeNo, red, green, blue):
+        self.listOfEdges[edgeNo].setRGB(red, green, blue)
+
+    def setEdgeRGBA(self, edgeNo, red, green, blue, alpha):
+        self.listOfEdges[edgeNo].setRGBA(red, green, blue, alpha)
+
+    def getEdgeRed(self, edgeNo):
+        return self.listOfEdges[edgeNo].getRed()
+
+    def getEdgeGreen(self, edgeNo):
+        return self.listOfEdges[edgeNo].getGreen()
+
+    def getEdgeBlue(self, edgeNo):
+        return self.listOfEdges[edgeNo].getBlue()
+
+    def getEdgeAlpha(self, edgeNo):
+        return self.listOfEdges[edgeNo].getAlpha()
+
+    #MODIFY COLOR OF ALL EDGES
+
+    def setAllEdgeRed(self, red):
+        for e in range(0, len(self.listOfEdges)):
+            self.listOfEdges[e].setRed(red)
+
+    def setAllEdgeGreen(self, green):
+        for e in range(0, len(self.listOfEdges)):
+            self.listOfEdges[e].setGreen(green)
+
+    def setAllEdgeBlue(self, blue):
+        for e in range(0, len(self.listOfEdges)):
+            self.listOfEdges[e].setBlue(blue)
+
+    def setAllEdgeRGB(self, red, green, blue):
+        for e in range(0, len(self.listOfEdges)):
+            self.listOfEdges[e].setRGB(red, green, blue)
+
+    def setAllEdgeRGBA(self, red, green, blue, alpha):
+        for e in range(0, len(self.listOfEdges)):
+            self.listOfEdges[e].setRGBA(red, green, blue, alpha)
+    
+    #SET NAMES VISIBLE/INVISIBLE
     def setNamesVisible(self):
         for v in range(0, len(self.listOfVertices)):
             self.listOfVertices[v].setNameVisible()
@@ -46,28 +201,24 @@ class GraphPanel(Widget):
         for v in range(0, len(self.listOfVertices)):
             self.listOfVertices[v].setNameInvisible()
 
+    #SET POSITION OF VERTEX
     def setVertexPosition(self, vertexNo, x, y):
         self.listOfVertices[vertexNo].setInitialPosition(x,y)
         self.listOfVertices[vertexNo].setAlpha(1)
 
+    #ADD EDGE
     def addEdge(self, vertexFromIndex, vertexToIndex, weight):
         edge = Edge()
         self.add_widget(edge)
+        edge.setWeight(weight)
         edge.setVertices(self.listOfVertices[vertexFromIndex], self.listOfVertices[vertexToIndex])
         self.listOfEdges.append(edge)
         self.listOfVertices[vertexFromIndex].addOutgoingEdge(self.currentEdge)
         self.listOfVertices[vertexToIndex].addIncomingEdge(self.currentEdge)
         self.currentEdge = self.currentEdge + 1
 
-    def printVertexEdges(self):
-        for v in range(0,len(self.listOfVertices)):
-            print("vertex Number")
-            print(v)
-            print("edges incoming")
-            print(self.listOfVertices[v].getIncomingEdgeIndexes())
-            print("edges outgoing")
-            print(self.listOfVertices[v].getOutgoingEdgeIndexes())
-            
+
+    #DRAG VERTICES
     def on_touch_down(self, touch):
         for v in range(0, len(self.listOfVertices)):
             if self.listOfVertices[v].collide_point(touch.x, touch.y):
