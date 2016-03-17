@@ -266,6 +266,45 @@ class GraphPanel(Widget):
                 for j in self.listOfVertices[v].getOutgoingEdgeIndexes():
                     self.listOfEdges[j].changeFromCoordinates(touch.x, touch.y)
     
+    def loadGraph(self, filePath):
+        numDeclaredEdges = -1
+        numAddedEdges = 0
+        verticesLoaded = False
+        edgeNumLoaded = False
+        f = open(filePath)
+        for line in f.readlines():
+            if(verticesLoaded == False):
+                self.newGraph(int(line))
+                verticesLoaded = True
+            elif(edgeNumLoaded == False):
+                numDeclaredEdges = int(line)
+                edgeNumLoaded = True
+            else:
+                vertexFromIndex = -1
+                vertexToIndex = -1
+                edgeWeight = 0
+                numStart = -1
+                for i in range(0, len(line)-1):
+                    if(line[i]!=" "):
+                            if(numStart<0):
+                                numStart = i
+                    else:
+                        if(numStart > -1):
+                            if(vertexFromIndex<0):
+                                vertexFromIndex = int(line[numStart:i])
+                                numStart = -1
+                                
+                            elif(vertexToIndex<0):
+                                vertexToIndex = int(line[numStart:i])
+                                numStart = -1
+
+                            else:
+                                
+                                vertexToIndex = float(line[numStart:i])
+                                numStart = -1
+                        
+                self.addEdge(vertexFromIndex, vertexToIndex, edgeWeight)
+    
 
 class GraphPanelApp(App):
     def build(self):
