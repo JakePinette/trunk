@@ -1,6 +1,6 @@
 from kivy.app import App
 from kivy.uix.widget import Widget
-from kivy.properties import ListProperty, NumericProperty
+from kivy.properties import ListProperty, NumericProperty, BooleanProperty
 from Edge import Edge
 from Vertex import Vertex
 from kivy.lang import Builder
@@ -16,6 +16,7 @@ class GraphPanel(Widget):
     red = NumericProperty(1)
     green = NumericProperty(1)
     blue = NumericProperty(1)
+    namesOn = BooleanProperty(False)
     currentEdge = 0
 
     #NEW GRAPH
@@ -45,7 +46,7 @@ class GraphPanel(Widget):
         for v in range(0, len(self.listOfVertices)):
             self.listOfVertices[v].setRadius(radius)
 
-    def getDefaultVertexRadius(self, radius):
+    def getDefaultVertexRadius(self):
         return self.defaultRadius
 
     def setVertexRadius(self, vertexNo, radius):
@@ -187,7 +188,6 @@ class GraphPanel(Widget):
         return self.listOfEdges[edgeNo].getAlpha()
 
     #MODIFY COLOR OF ALL EDGES
-
     def setAllEdgeRed(self, red):
         for e in range(0, len(self.listOfEdges)):
             self.listOfEdges[e].setRed(red)
@@ -210,10 +210,12 @@ class GraphPanel(Widget):
     
     #SET NAMES VISIBLE/INVISIBLE
     def setNamesVisible(self):
+        self.namesOn = True
         for v in range(0, len(self.listOfVertices)):
             self.listOfVertices[v].setNameVisible()
 
     def setNamesInvisible(self):
+        self.namesOn = False
         for v in range(0, len(self.listOfVertices)):
             self.listOfVertices[v].setNameInvisible()
 
@@ -225,6 +227,8 @@ class GraphPanel(Widget):
         for e in self.listOfVertices[vertexNo].getOutgoingEdgeIndexes():
             self.listOfEdges[e].updateArrow()
         self.listOfVertices[vertexNo].setAlpha(1)
+        if (self.namesOn):
+            self.listOfVertices[vertexNo].setNameVisible()
 
     #ADD EDGE
     def addEdge(self, vertexFromIndex, vertexToIndex, weight):
@@ -241,7 +245,7 @@ class GraphPanel(Widget):
     #DRAG VERTICES
     def on_touch_down(self, touch):
         for v in range(0, len(self.listOfVertices)):
-            if self.listOfVertices[v].collide_point(touch.x, touch.y):
+            if self.listOfVertices[v].collide(touch.x, touch.y):
                 self.currentVertex = v
                 self.listOfVertices[v].click()
                 break
@@ -281,6 +285,7 @@ class GraphPanelApp(App):
         graphPanel.listOfVertices[0].setRGB(1,0,0)
         graphPanel.listOfVertices[2].setName("Hello")
         graphPanel.setNamesVisible()
+     
 
         return graphPanel
 

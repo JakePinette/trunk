@@ -141,6 +141,11 @@ class Vertex(Widget):
     def getOutgoingEdgeIndexes(self):
         return self.outgoingEdges
 
+    def collide(self, x, y):
+        if ((self.center_x - x)**(2) + (self.center_y - y)**(2)) <= self.radius**2:
+            return True
+        return False
+
 
 class MainPanel(Widget):
     pass
