@@ -11,6 +11,8 @@ class GraphPanel(Widget):
     currentVertex = NumericProperty( -1 )
     listOfVertices = ListProperty( [] )
     listOfEdges = ListProperty( [] )
+
+    defaultRadius = NumericProperty(25)
     red = NumericProperty(1)
     green = NumericProperty(1)
     blue = NumericProperty(1)
@@ -37,12 +39,26 @@ class GraphPanel(Widget):
             self.listOfVertices.append(vertex)
             self.add_widget(vertex)
 
-    #WEIGHT OF EDGES
+    #RADIUS
+    def setDefaultVertexRadius(self, radius):
+        self.defaultRadius = radius
+        for v in range(0, len(self.listOfVertices)):
+            self.listOfVertices[v].setRadius(radius)
 
-    def getEdgeWeight(edgeNo):
+    def getDefaultVertexRadius(self, radius):
+        return self.defaultRadius
+
+    def setVertexRadius(self, vertexNo, radius):
+        self.listOfVertices[vertexNo].setRadius(radius)
+
+    def getVertexRadius(self, vertexNo):
+        return self.listOfVertices[vertexNo].getRadius()
+
+    #WEIGHT OF EDGES
+    def getEdgeWeight(self, edgeNo):
         return self.listOfEdges[edgeNo].getWeight()
 
-    def setEdgeWeight(edgeNo, weight):
+    def setEdgeWeight(self, edgeNo, weight):
         self.listOfEdges[edgeNo].setWeight(weight)
         
     #NAME/INFO OF VERTICES
@@ -204,6 +220,10 @@ class GraphPanel(Widget):
     #SET POSITION OF VERTEX
     def setVertexPosition(self, vertexNo, x, y):
         self.listOfVertices[vertexNo].setInitialPosition(x,y)
+        for e in self.listOfVertices[vertexNo].getIncomingEdgeIndexes():
+            self.listOfEdges[e].updateArrow()
+        for e in self.listOfVertices[vertexNo].getOutgoingEdgeIndexes():
+            self.listOfEdges[e].updateArrow()
         self.listOfVertices[vertexNo].setAlpha(1)
 
     #ADD EDGE
