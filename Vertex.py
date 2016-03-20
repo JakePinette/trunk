@@ -4,7 +4,7 @@ from kivy.uix.label import Label
 from kivy.properties import NumericProperty, ListProperty
 from kivy.properties import BooleanProperty, StringProperty
 from kivy.properties import ObjectProperty
-from Edge import Edge
+import Edge
 from kivy.lang import Builder
 Builder.load_file('GraphPanel.kv')
 
@@ -17,6 +17,8 @@ class Vertex(Widget):
     alpha = NumericProperty(0.8)
     radius = NumericProperty(25)
 
+    incomingEdgeIndexes = ListProperty([])
+    outgoingEdgeIndexes = ListProperty([])
     incomingEdges = ListProperty([])
     outgoingEdges = ListProperty([])
 
@@ -121,6 +123,16 @@ class Vertex(Widget):
     def setInitialPosition(self,x,y):
         self.center_x = x
         self.center_y = y
+        
+        if self.label != None:
+            self.label.center_x = x
+            self.label.center_y = y
+
+        for edge in self.incomingEdges:
+            edge.changeToCoordinates(x,y)
+
+        for edge in self.outgoingEdges:
+            edge.changeFromCoordinates(x,y)
 
     def getX(self):
         return self.center_x
@@ -128,17 +140,30 @@ class Vertex(Widget):
     def getY(self):
         return self.center_y
 
-    #Add/Get incoming/outgoing edges
-    def addIncomingEdge(self, edgeIndex):
-        self.incomingEdges.append(edgeIndex)
+    #Add/Get incoming/outgoing edge INDEXES
+    def addIncomingEdgeIndex(self, edgeIndex):
+        self.incomingEdgeIndexes.append(edgeIndex)
 
-    def addOutgoingEdge(self, edgeIndex):
-        self.outgoingEdges.append(edgeIndex)
+    def addOutgoingEdgeIndex(self, edgeIndex):
+        self.outgoingEdgeIndexes.append(edgeIndex)
 
     def getIncomingEdgeIndexes(self):
-        return self.incomingEdges
+        return self.incomingEdgeIndexes
 
     def getOutgoingEdgeIndexes(self):
+        return self.outgoingEdgeIndexes
+
+    #Add/Get incoming/outgoing edge OBJECTS
+    def addIncomingEdge(self, edge):
+        self.incomingEdges.append(edge)
+
+    def addOutgoingEdge(self, edge):
+        self.outgoingEdges.append(edge)
+
+    def getIncomingEdges(self):
+        return self.incomingEdges
+
+    def getOutgoingEdges(self):
         return self.outgoingEdges
 
     def collide(self, x, y):

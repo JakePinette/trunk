@@ -36,15 +36,21 @@ class GraphPanel(Widget):
         #Now initialize the new graph
         for x in range(0, numVertices):
             vertex = Vertex()
+            vertex.pos = self.pos
             vertex.setName(str(x))
             self.listOfVertices.append(vertex)
             self.add_widget(vertex)
 
+
     #RADIUS
     def setDefaultVertexRadius(self, radius):
         self.defaultRadius = radius
+        arrowWidth = (int)(round(radius/4.0))
         for v in range(0, len(self.listOfVertices)):
             self.listOfVertices[v].setRadius(radius)
+        for e in range(0, len(self.listOfEdges)):
+            self.listOfEdges[e].arrowWidth = arrowWidth
+            self.listOfEdges[e].updateArrow()
 
     def getDefaultVertexRadius(self):
         return self.defaultRadius
@@ -221,12 +227,16 @@ class GraphPanel(Widget):
 
     #SET POSITION OF VERTEX
     def setVertexPosition(self, vertexNo, x, y):
-        self.listOfVertices[vertexNo].setInitialPosition(x,y)
-        for e in self.listOfVertices[vertexNo].getIncomingEdgeIndexes():
-            self.listOfEdges[e].updateArrow()
-        for e in self.listOfVertices[vertexNo].getOutgoingEdgeIndexes():
-            self.listOfEdges[e].updateArrow()
         self.listOfVertices[vertexNo].setAlpha(1)
+        self.listOfVertices[vertexNo].setInitialPosition(x,y)
+        
+        for e in self.listOfVertices[vertexNo].getIncomingEdgeIndexes():
+            self.listOfEdges[e].changeToCoordinates(x,y)
+            
+        for e in self.listOfVertices[vertexNo].getOutgoingEdgeIndexes():
+            self.listOfEdges[e].changeFromCoordinates(x,y)
+            
+        
         if (self.namesOn):
             self.listOfVertices[vertexNo].setNameVisible()
 
@@ -237,9 +247,27 @@ class GraphPanel(Widget):
         edge.setWeight(weight)
         edge.setVertices(self.listOfVertices[vertexFromIndex], self.listOfVertices[vertexToIndex])
         self.listOfEdges.append(edge)
-        self.listOfVertices[vertexFromIndex].addOutgoingEdge(self.currentEdge)
-        self.listOfVertices[vertexToIndex].addIncomingEdge(self.currentEdge)
+        self.listOfVertices[vertexFromIndex].addOutgoingEdgeIndex(self.currentEdge)
+        self.listOfVertices[vertexToIndex].addIncomingEdgeIndex(self.currentEdge)
         self.currentEdge = self.currentEdge + 1
+
+    def getVertexList(self):
+        return self.listOfVertices
+
+    def getEdgeList(self):
+        return self.listOfEdges
+
+    def getOutgoingEdges(self, vertexNo):
+        return self.listOfVertices[vertexNo].getOutgoingEdges()
+
+    def getIncomingEdges(self, vertexNo):
+        return self.listOfVertices[vertexNo].getIncomingEdges()
+
+    def getVertex(self, vertexNo):
+        return self.listOfVertices[vertexNo]
+
+    def getEdge(self, edgeNo):
+        return self.listOfEdges[edgeNo]
 
 
     #DRAG VERTICES
@@ -305,7 +333,6 @@ class GraphPanel(Widget):
                         
                 self.addEdge(vertexFromIndex, vertexToIndex, edgeWeight)
     
-
 class GraphPanelApp(App):
     def build(self):
         graphPanel = GraphPanel()
@@ -316,15 +343,13 @@ class GraphPanelApp(App):
         graphPanel.setVertexPosition(3, 200, 300)
         graphPanel.addEdge(0, 1, 4)
         graphPanel.addEdge(1, 2, 5)
-        graphPanel.addEdge(2, 1, 6)
-        graphPanel.addEdge(1, 3, 7)
+        graphPanel.addEdge(1, 0 ,2)
         graphPanel.addEdge(0, 3, 8)
 
         graphPanel.listOfVertices[1].setRadius(10)
         graphPanel.listOfVertices[0].setRGB(1,0,0)
         graphPanel.listOfVertices[2].setName("Hello")
         graphPanel.setNamesVisible()
-     
 
         return graphPanel
 
