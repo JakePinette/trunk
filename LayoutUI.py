@@ -35,9 +35,21 @@ class BuildLayout(App):
 
         #this is the top bar
         TopBar = BoxLayout(size_hint=(0.75, 1))
-
-        #this is the Tabbed Box on the right side
+        #vvvv And contents of Top Bar vvvv
+        btnOpenFile = Button(text='Open new File')
+        btnDisplay = Button(text='Display')
+        btnHelp = Button(text='help')
+        
+        #vvvv this is the Tabbed Box on the right side vvvv
         ToolBar = Test(size_hint=(0.25, 1))
+        
+        #vvvv and the contents of the Toolbar vvvv
+        lblName = Label(text='name')
+
+        lblPlaceholder = Label(text='_________')
+        
+        lblInfo = Label(tet='Info')
+        
 
 
         #button used to test (temporary)
@@ -74,8 +86,16 @@ class BuildLayout(App):
         
         
         ToolBarHolder.add_widget(ToolBar)
+        #ToolBar.add_widget(lblName)
+        #ToolBar.add_widget(lblPlaceholder)
+        #Toolbar.add_widget(lblInfo)
+
+        
         TopBarHolder.add_widget(TopBar)
-        TopBar.add_widget(btntest)
+        TopBar.add_widget(btnOpenFile)
+        TopBar.add_widget(btnDisplay)
+        TopBar.add_widget(btnHelp)
+        
         RemainingHolder.add_widget(graphPanel)
         #^^^^ Adding everything to the UI ^^^^
 
