@@ -16,14 +16,22 @@ from GraphPanel import GraphPanel
 Builder.load_file("LayoutUI.kv")
 #loading the graph capabilities kv file.
 Builder.load_file("GraphPanel.kv")
+#loading the info tab specifications.
+Builder.load_file("InfoPanel.kv")
 
 #Initializing the Test class (Renamed later)
-class Test(TabbedPanel):
+class Toolbar(TabbedPanel):
     pass
 
+class TabbedPanelApp(App):
+    def build(self):
+        btnTest = Button(text='attempt in python')
+        TabbedPanel.add_widget(btntest)
+        return Toolbar()
         
 class BuildLayout(App):
     def build(self):
+        
         #vvvv Basic Layouts vvvv
         layout = AnchorLayout(anchor_x='center', anchor_y='top')
 
@@ -41,7 +49,7 @@ class BuildLayout(App):
         btnHelp = Button(text='help')
         
         #vvvv this is the Tabbed Box on the right side vvvv
-        ToolBar = Test(size_hint=(0.25, 1))
+        ToolBar = Toolbar(size_hint=(0.25, 1))
         
         #vvvv and the contents of the Toolbar vvvv
         lblName = Label(text='name')
@@ -50,10 +58,6 @@ class BuildLayout(App):
         
         lblInfo = Label(tet='Info')
         
-
-
-        #button used to test (temporary)
-        btntest = Button(text='topBar')
         
         
         #this is where the graph visualization goes
@@ -86,9 +90,6 @@ class BuildLayout(App):
         
         
         ToolBarHolder.add_widget(ToolBar)
-        #ToolBar.add_widget(lblName)
-        #ToolBar.add_widget(lblPlaceholder)
-        #Toolbar.add_widget(lblInfo)
 
         
         TopBarHolder.add_widget(TopBar)
