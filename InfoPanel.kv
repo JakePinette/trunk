@@ -1,19 +1,22 @@
-<RootWidget>:
+<InfoPanel>:
 
-    GridLayout:
-        
-        cols: 2
-        Label:
+    BoxLayout:
+        size: root.size
+        orientation: 'vertical'
+        Button:
             text: "Vertex Info: "
+            on_release: root.set_vertexTextInfo()
         Label:
-            text: root.data_model.vertexTextInfo
+            text: root.vertexTextInfo
             
-        Label:
+        Button:
             text: "Vertex Outgoing Edges: "
+            on_release: root.set_vertexOutgoingEdges()
         Label:
-            text: root.data_model.vertexOutgoingEdges
+            text: root.vertexOutgoingEdges
             
-        Label:
+        Button:
             text: "Vertex Incoming Edges: "
+            on_release: root.set_vertexIncomingEdges()
         Label:
-            text: root.data_model.vertexIncomingEdges
+            text: root.vertexIncomingEdges
