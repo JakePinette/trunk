@@ -2,21 +2,42 @@
 
     BoxLayout:
         size: root.size
+        pos: root.pos
         orientation: 'vertical'
+
+
         Button:
+            size_hint: 1, 0.15
+            text: "Vertex Name: "
+            on_release: root.set_vertexName()
+        TextInput:
+            id: nameBox
+            size_hint: 1, 0.3
+            multiline: False
+            text: root.vertexName
+            
+        Button:
+            size_hint: 1, 0.15
             text: "Vertex Info: "
             on_release: root.set_vertexTextInfo()
-        Label:
+        TextInput:
+            id: infoBox
+            size_hint: 1, 0.5
             text: root.vertexTextInfo
             
         Button:
+            size_hint: 1, 0.15
             text: "Vertex Outgoing Edges: "
             on_release: root.set_vertexOutgoingEdges()
-        Label:
+        TextInput:
+            readonly: True
             text: root.vertexOutgoingEdges
             
         Button:
+            size_hint: 1, 0.15
             text: "Vertex Incoming Edges: "
             on_release: root.set_vertexIncomingEdges()
-        Label:
+        TextInput:
+            readonly: True
             text: root.vertexIncomingEdges
+
