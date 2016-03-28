@@ -1,8 +1,10 @@
 from kivy.app import App
 from kivy.uix.widget import Widget
 from kivy.properties import ListProperty, NumericProperty, BooleanProperty
+from kivy.properties import ObjectProperty
 from Edge import Edge
 from Vertex import Vertex
+from InfoPanel import InfoPanel
 from kivy.lang import Builder
 Builder.load_file('GraphPanel.kv')
 
@@ -11,6 +13,7 @@ class GraphPanel(Widget):
     currentVertex = NumericProperty( -1 )
     listOfVertices = ListProperty( [] )
     listOfEdges = ListProperty( [] )
+    dataColector = ObjectProperty(InfoPanel())
 
     defaultRadius = NumericProperty(25)
     red = NumericProperty(1)
@@ -42,6 +45,11 @@ class GraphPanel(Widget):
             self.listOfVertices.append(vertex)
             self.add_widget(vertex)
 
+    #SET DATA COLECTOR
+    def setDataColector(self, colector):
+        self.dataColector = colector
+
+    
     #MAKE GRAPH FROM FILE
     def loadGraph(self, filePath):
         numDeclaredEdges = -1
@@ -315,6 +323,7 @@ class GraphPanel(Widget):
         for v in range(0, len(self.listOfVertices)):
             if self.listOfVertices[v].collide(touch.x, touch.y):
                 self.currentVertex = v
+                self.dataColector.getData(v)
                 self.listOfVertices[v].click()
                 break
             
