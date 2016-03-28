@@ -23,7 +23,7 @@ class InfoPanel(Widget):
     def __init__(self, **kwargs):
         
         super(InfoPanel, self).__init__(**kwargs)
-        self.vertexName = 'this is Node Name' #this is where getInfo(for name)
+        self.vertexName = 'this is Node Name'
         self.vertexTextInfo = 'This is Node info'
         self.vertexOutgoingEdges = 'This is outgoing Edge List'
         self.vertexIncomingEdges = 'This is the Incoming Edge List'

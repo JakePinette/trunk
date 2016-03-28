@@ -15,10 +15,6 @@ from InfoPanel import InfoPanel
 
 #loading the LayoutUI specifications
 Builder.load_file("LayoutUI.kv")
-#loading the graph capabilities kv file.
-Builder.load_file("GraphPanel.kv")
-#loading the info tab specifications.
-Builder.load_file("InfoPanel.kv")
 
 #Initializing the Test class (Renamed later)
 class Toolbar(TabbedPanel):
@@ -30,7 +26,6 @@ class Toolbar(TabbedPanel):
         box.add_widget(btnfill)
         
         self.ids.Node.add_widget(box)
-
         
         
 
@@ -110,8 +105,6 @@ class BuildLayout(App):
         TopBar.add_widget(btnHelp)
 
         ToolBar.Initalize()
-
-        
 
         
         RemainingHolder.add_widget(graphPanel)

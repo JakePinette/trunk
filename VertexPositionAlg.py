@@ -7,7 +7,6 @@ from GraphPanel import GraphPanel
 from Vertex import Vertex
 from Edge import Edge
 from kivy.lang import Builder
-Builder.load_file('GraphPanel.kv')
 
 def isTree(graphPanel):
     isTree = False
