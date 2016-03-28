@@ -36,12 +36,51 @@ class GraphPanel(Widget):
         #Now initialize the new graph
         for x in range(0, numVertices):
             vertex = Vertex()
+            vertex.setID(x)
             vertex.pos = self.pos
             vertex.setName(str(x))
             self.listOfVertices.append(vertex)
             self.add_widget(vertex)
 
+    #MAKE GRAPH FROM FILE
+    def loadGraph(self, filePath):
+        numDeclaredEdges = -1
+        numAddedEdges = 0
+        verticesLoaded = False
+        edgeNumLoaded = False
+        f = open(filePath)
+        for line in f.readlines():
+            if(verticesLoaded == False):
+                self.newGraph(int(line))
+                verticesLoaded = True
+            elif(edgeNumLoaded == False):
+                numDeclaredEdges = int(line)
+                edgeNumLoaded = True
+            else:
+                vertexFromIndex = -1
+                vertexToIndex = -1
+                edgeWeight = 0
+                numStart = -1
+                for i in range(0, len(line)-1):
+                    if(line[i]!=" "):
+                            if(numStart<0):
+                                numStart = i
+                    else:
+                        if(numStart > -1):
+                            if(vertexFromIndex<0):
+                                vertexFromIndex = int(line[numStart:i])
+                                numStart = -1
+                                
+                            elif(vertexToIndex<0):
+                                vertexToIndex = int(line[numStart:i])
+                                numStart = -1
 
+                            else:
+                                
+                                vertexToIndex = float(line[numStart:i])
+                                numStart = -1
+                        
+                self.addEdge(vertexFromIndex, vertexToIndex, edgeWeight)
     #RADIUS
     def setDefaultVertexRadius(self, radius):
         self.defaultRadius = radius
@@ -251,6 +290,7 @@ class GraphPanel(Widget):
         self.listOfVertices[vertexToIndex].addIncomingEdgeIndex(self.currentEdge)
         self.currentEdge = self.currentEdge + 1
 
+    #TRAVERSAL METHODS
     def getVertexList(self):
         return self.listOfVertices
 
@@ -272,12 +312,11 @@ class GraphPanel(Widget):
 
     #DRAG VERTICES
     def on_touch_down(self, touch):
-        if self.collide_point(touch.x, touch.y):
-            for v in range(0, len(self.listOfVertices)):
-                if self.listOfVertices[v].collide(touch.x, touch.y):
-                    self.currentVertex = v
-                    self.listOfVertices[v].click()
-                    break
+        for v in range(0, len(self.listOfVertices)):
+            if self.listOfVertices[v].collide(touch.x, touch.y):
+                self.currentVertex = v
+                self.listOfVertices[v].click()
+                break
             
     def on_touch_up(self, touch):
         if self.currentVertex != (-1):
@@ -295,44 +334,7 @@ class GraphPanel(Widget):
                 for j in self.listOfVertices[v].getOutgoingEdgeIndexes():
                     self.listOfEdges[j].changeFromCoordinates(touch.x, touch.y)
     
-    def loadGraph(self, filePath):
-        numDeclaredEdges = -1
-        numAddedEdges = 0
-        verticesLoaded = False
-        edgeNumLoaded = False
-        f = open(filePath)
-        for line in f.readlines():
-            if(verticesLoaded == False):
-                self.newGraph(int(line))
-                verticesLoaded = True
-            elif(edgeNumLoaded == False):
-                numDeclaredEdges = int(line)
-                edgeNumLoaded = True
-            else:
-                vertexFromIndex = -1
-                vertexToIndex = -1
-                edgeWeight = 0
-                numStart = -1
-                for i in range(0, len(line)-1):
-                    if(line[i]!=" "):
-                            if(numStart<0):
-                                numStart = i
-                    else:
-                        if(numStart > -1):
-                            if(vertexFromIndex<0):
-                                vertexFromIndex = int(line[numStart:i])
-                                numStart = -1
-                                
-                            elif(vertexToIndex<0):
-                                vertexToIndex = int(line[numStart:i])
-                                numStart = -1
-
-                            else:
-                                
-                                vertexToIndex = float(line[numStart:i])
-                                numStart = -1
-                        
-                self.addEdge(vertexFromIndex, vertexToIndex, edgeWeight)
+    
     
 class GraphPanelApp(App):
     def build(self):

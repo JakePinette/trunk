@@ -14,8 +14,9 @@ class Vertex(Widget):
     red = NumericProperty(0.3)
     green = NumericProperty(1)
     blue = NumericProperty(0)
-    alpha = NumericProperty(0.8)
+    alpha = NumericProperty(0.5)
     radius = NumericProperty(25)
+    ID = NumericProperty(1)
 
     incomingEdgeIndexes = ListProperty([])
     outgoingEdgeIndexes = ListProperty([])
@@ -27,6 +28,13 @@ class Vertex(Widget):
     label = ObjectProperty( None )
 
     clickState = BooleanProperty(False)
+
+    #Get/Set ID
+    def setID(self, num):
+        self.ID = num
+
+    def getID(self):
+        return self.ID
 
     #Getter setter for vertex radius
     def setRadius(self, radius):
