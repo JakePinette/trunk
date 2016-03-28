@@ -4,17 +4,19 @@
     do_default_tab: False
 
     TabbedPanelItem:
+        id: Node
         text: 'Node Tab'
         BoxLayout:
             orientation: 'vertical'
-            Label:
-                text: 'Name'
+            
+            InfoPanel:
+                size_hint: 1, 0.8
             Button:
-                text: 'PlaceHolder'
-            Button:
-                text: 'testeroni'
+                text: 'Neighbourhood'
+                size_hint: 1, 0.2
                 
     TabbedPanelItem:
+        id: Graph
         text: 'Graph Tab'
         BoxLayout:
             orientation: 'vertical'

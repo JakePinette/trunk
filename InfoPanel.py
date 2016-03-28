@@ -1,16 +1,18 @@
 from kivy.app import App
 from kivy.uix.widget import Widget
-from kivy.uix.gridlayout import GridLayout
+from kivy.uix.boxlayout import BoxLayout
 from kivy.properties import StringProperty
 from Edge import Edge
 from Vertex import Vertex
 from kivy.lang import Builder
 from kivy.uix.textinput import TextInput
+from kivy.uix.button import Button
 
 Builder.load_file('InfoPanel.kv')
 
 class InfoPanel(Widget):
-
+    
+    
     vertexName = StringProperty()
     vertexTextInfo = StringProperty()
     vertexOutgoingEdges = StringProperty()
@@ -26,6 +28,33 @@ class InfoPanel(Widget):
         self.vertexOutgoingEdges = 'This is outgoing Edge List'
         self.vertexIncomingEdges = 'This is the Incoming Edge List'
 
+
+    def getData(v):
+        self.vertexName = v.getName()
+        self.vertexTextInfo = v.getInfo()
+        outgoing = v.getOutgoingEdges()
+        incoming = v.getIncomingEdges()
+        StringOutgoing = ""
+        StringIncoming = ""
+        
+        for e in outgoing:
+            fromV = e.getFromVertex()
+            toV = e.getToVertex()
+            StringOutgoing = StringOutgoing + str(fromV.getIndex())
+            StringOutgoing = StringOutgoing + " -> "
+            StringOutgoing = StringOutgoing + str(toV.getIndex())+ '\n'
+            
+        self.vertexOutgoingEdges = StringOutgoing
+
+        for e in incoming:
+            fromV = e.getFromVertex()
+            toV = e.getToVertex()
+            StringIncoming = StringIncoming + str(fromV.getIndex())
+            StringIncoming = StringIncoming + " -> "
+            StringIncoming = StringIncoming + str(toV.getIndex())+ '\n'
+
+        self.vertexIncomingEdges = StringIncoming
+            
 
     def set_vertexName(self):
         self.vertexName = "Name set"
@@ -47,7 +76,12 @@ class InfoPanel(Widget):
 
 class buildInfoPanel(App):
     def build(self):
-        return InfoPanel()
+        box = BoxLayout()
+        btn = Button(text = "testeroni")
+        info = InfoPanel()
+        box.add_widget(btn)
+        box.add_widget(info)
+        return box
 
 #-----------------------------------------------------------------------------
 

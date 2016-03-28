@@ -11,6 +11,7 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.lang import Builder
 from GraphPanel import GraphPanel
+from InfoPanel import InfoPanel
 
 #loading the LayoutUI specifications
 Builder.load_file("LayoutUI.kv")
@@ -21,13 +22,24 @@ Builder.load_file("InfoPanel.kv")
 
 #Initializing the Test class (Renamed later)
 class Toolbar(TabbedPanel):
-    pass
+    def Initalize(self):
+        btnfill = Button(text="placeholderoni", size_hint=(1,0.2))
+        info = InfoPanel(size_hint=(1, 0.8))
+        box = BoxLayout(orientation='vertical')
+        box.add_widget(info)
+        box.add_widget(btnfill)
+        
+        self.ids.Node.add_widget(box)
+
+        
+        
 
 class TabbedPanelApp(App):
     def build(self):
         btnTest = Button(text='attempt in python')
         TabbedPanel.add_widget(btntest)
         return Toolbar()
+
         
 class BuildLayout(App):
     def build(self):
@@ -52,7 +64,7 @@ class BuildLayout(App):
         ToolBar = Toolbar(size_hint=(0.25, 1))
         
         #vvvv and the contents of the Toolbar vvvv
-        lblName = Label(text='name')
+        info = InfoPanel()
 
         lblPlaceholder = Label(text='_________')
         
@@ -96,6 +108,11 @@ class BuildLayout(App):
         TopBar.add_widget(btnOpenFile)
         TopBar.add_widget(btnDisplay)
         TopBar.add_widget(btnHelp)
+
+        ToolBar.Initalize()
+
+        
+
         
         RemainingHolder.add_widget(graphPanel)
         #^^^^ Adding everything to the UI ^^^^

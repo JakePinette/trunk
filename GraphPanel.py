@@ -272,11 +272,12 @@ class GraphPanel(Widget):
 
     #DRAG VERTICES
     def on_touch_down(self, touch):
-        for v in range(0, len(self.listOfVertices)):
-            if self.listOfVertices[v].collide(touch.x, touch.y):
-                self.currentVertex = v
-                self.listOfVertices[v].click()
-                break
+        if self.collide_point(touch.x, touch.y):
+            for v in range(0, len(self.listOfVertices)):
+                if self.listOfVertices[v].collide(touch.x, touch.y):
+                    self.currentVertex = v
+                    self.listOfVertices[v].click()
+                    break
             
     def on_touch_up(self, touch):
         if self.currentVertex != (-1):
