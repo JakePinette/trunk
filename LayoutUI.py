@@ -9,6 +9,7 @@ from kivy.uix.button import Button
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.anchorlayout import AnchorLayout
+from kivy.properties import ObjectProperty
 from kivy.lang import Builder
 from GraphPanel import GraphPanel
 from InfoPanel import InfoPanel
@@ -18,9 +19,13 @@ Builder.load_file("LayoutUI.kv")
 
 #Initializing the Test class (Renamed later)
 class Toolbar(TabbedPanel):
+
+    infoPanel = ObjectProperty(InfoPanel(size_hint=(1, 0.8)))
+    
     def Initalize(self):
         btnfill = Button(text="placeholderoni", size_hint=(1,0.2))
         info = InfoPanel(size_hint=(1, 0.8))
+        self.infoPanel = info
         box = BoxLayout(orientation='vertical')
         box.add_widget(info)
         box.add_widget(btnfill)
@@ -59,7 +64,6 @@ class BuildLayout(App):
         ToolBar = Toolbar(size_hint=(0.25, 1))
         
         #vvvv and the contents of the Toolbar vvvv
-        info = InfoPanel()
 
         lblPlaceholder = Label(text='_________')
         
@@ -105,6 +109,8 @@ class BuildLayout(App):
         TopBar.add_widget(btnHelp)
 
         ToolBar.Initalize()
+
+        graphPanel.setDataColector(ToolBar.infoPanel)
 
         
         RemainingHolder.add_widget(graphPanel)

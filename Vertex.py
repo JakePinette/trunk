@@ -26,7 +26,8 @@ class Vertex(Widget):
     name = StringProperty("")
     info = StringProperty("")
     label = ObjectProperty( None )
-
+    
+    namesOn = BooleanProperty(False)
     clickState = BooleanProperty(False)
 
     #Get/Set ID
@@ -50,6 +51,9 @@ class Vertex(Widget):
     #Getter/Setters for Name/Info
     def setName(self, name):
         self.name = name
+        if self.namesOn == True:
+            self.setNameInvisible()
+            self.setNameVisible()
 
     def setInfo(self, info):
         self.info = info
@@ -65,12 +69,14 @@ class Vertex(Widget):
         return self.info
 
     def setNameVisible(self):
+        self.namesOn = True
         self.label = Label(color=(0,0,0,1), text=self.name, center_x = self.center_x, center_y = self.center_y)
         self.add_widget(self.label)
 
     def setNameInvisible(self):
-        self.remove_widget(self.label)
-        self.label = None
+        if self.namesOn == True:
+            self.namesOn = False
+            self.remove_widget(self.label)
 
     #Getter/Setter For Colors
     def setRGB(self, red, green, blue):

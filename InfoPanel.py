@@ -1,7 +1,7 @@
 from kivy.app import App
 from kivy.uix.widget import Widget
 from kivy.uix.boxlayout import BoxLayout
-from kivy.properties import StringProperty
+from kivy.properties import StringProperty, ObjectProperty
 from Edge import Edge
 from Vertex import Vertex
 from kivy.lang import Builder
@@ -12,7 +12,7 @@ Builder.load_file('InfoPanel.kv')
 
 class InfoPanel(Widget):
     
-    
+    currentVertex = ObjectProperty(Vertex())    
     vertexName = StringProperty()
     vertexTextInfo = StringProperty()
     vertexOutgoingEdges = StringProperty()
@@ -29,7 +29,9 @@ class InfoPanel(Widget):
         self.vertexIncomingEdges = 'This is the Incoming Edge List'
 
 
-    def getData(v):
+    def getData(self, v):
+        self.currentVertex = v
+        
         self.vertexName = v.getName()
         self.vertexTextInfo = v.getInfo()
         outgoing = v.getOutgoingEdges()
@@ -40,29 +42,32 @@ class InfoPanel(Widget):
         for e in outgoing:
             fromV = e.getFromVertex()
             toV = e.getToVertex()
-            StringOutgoing = StringOutgoing + str(fromV.getIndex())
+            StringOutgoing = StringOutgoing + str(fromV.getID())
             StringOutgoing = StringOutgoing + " -> "
-            StringOutgoing = StringOutgoing + str(toV.getIndex())+ '\n'
+            StringOutgoing = StringOutgoing + str(toV.getID())+ '\n'
             
         self.vertexOutgoingEdges = StringOutgoing
 
         for e in incoming:
             fromV = e.getFromVertex()
             toV = e.getToVertex()
-            StringIncoming = StringIncoming + str(fromV.getIndex())
+            StringIncoming = StringIncoming + str(fromV.getID())
             StringIncoming = StringIncoming + " -> "
-            StringIncoming = StringIncoming + str(toV.getIndex())+ '\n'
+            StringIncoming = StringIncoming + str(toV.getID())+ '\n'
 
         self.vertexIncomingEdges = StringIncoming
             
 
     def set_vertexName(self):
-        self.vertexName = "Name set"
+        self.vertexName = self.ids.nameBox.text 
+        self.currentVertex.setName(self.vertexName)
+        print(self.currentVertex.getName())
         
         
     def set_vertexTextInfo(self):
-        self.vertexTextInfo = "Text Info Set"
-        #this is where getinfo() for text info
+        self.vertexTextInfo = self.ids.infoBox.text
+        self.currentVertex.setInfo(self.vertexTextInfo)
+        print(self.currentVertex.getInfo())
 
     def set_vertexOutgoingEdges(self):
         self.vertexOutgoingEdges = "Outgoing Edges Set"

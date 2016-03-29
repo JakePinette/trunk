@@ -323,7 +323,7 @@ class GraphPanel(Widget):
         for v in range(0, len(self.listOfVertices)):
             if self.listOfVertices[v].collide(touch.x, touch.y):
                 self.currentVertex = v
-                self.dataColector.getData(v)
+                self.dataColector.getData(self.listOfVertices[v])
                 self.listOfVertices[v].click()
                 break
             

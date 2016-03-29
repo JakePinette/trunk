@@ -13,7 +13,6 @@ class Edge(Widget):
     green = NumericProperty(0)
     blue = NumericProperty(0)
     alpha = NumericProperty(1)
-    width = NumericProperty(1)
     weight = NumericProperty(1)
 
     x = NumericProperty(0)
@@ -76,13 +75,6 @@ class Edge(Widget):
 
     def getAlpha(self):
         return self.alpha
-
-    #WIDTH
-    def setWidth(self, width):
-        self.width = width
-
-    def getWidth(self):
-        return self.width
 
     #WEIGHT
     def setWeight(self, weight):
