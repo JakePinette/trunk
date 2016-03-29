@@ -24,11 +24,11 @@ class Vertex(Widget):
     outgoingEdges = ListProperty([])
 
     name = StringProperty("")
+    labelName = StringProperty('1')
     info = StringProperty("")
     label = ObjectProperty( None )
     
     namesOn = BooleanProperty(False)
-    clickState = BooleanProperty(False)
 
     #Get/Set ID
     def setID(self, num):
@@ -51,6 +51,10 @@ class Vertex(Widget):
     #Getter/Setters for Name/Info
     def setName(self, name):
         self.name = name
+        if name == '':
+            self.labelName = str(self.ID)
+        else:
+            self.labelName = str(self.ID) + "-" + name
         if self.namesOn == True:
             self.setNameInvisible()
             self.setNameVisible()
@@ -60,6 +64,10 @@ class Vertex(Widget):
 
     def setNameInfo(self, name, info):
         self.name = name
+        if name == '':
+            self.labelName = str(self.ID)
+        else:
+            self.labelName = str(self.ID) + "-" + name
         self.info = info
 
     def getName(self):
@@ -70,7 +78,7 @@ class Vertex(Widget):
 
     def setNameVisible(self):
         self.namesOn = True
-        self.label = Label(color=(0,0,0,1), text=self.name, center_x = self.center_x, center_y = self.center_y)
+        self.label = Label(color=(0,0,0,1), text=self.labelName, center_x = self.center_x, center_y = self.center_y)
         self.add_widget(self.label)
 
     def setNameInvisible(self):
@@ -114,25 +122,14 @@ class Vertex(Widget):
     def getAlpha(self):
         return self.alpha
 
-    #Vertex clickstate for touch events
-    def click(self):
-        self.clickState = True
-
-    def unClick(self):
-        self.clickState = False
-
-    def isClicked(self):
-        return self.clickState
-
     #Getter/Setter for vertex Position
     def setPosition(self, x, y):
-        if self.isClicked():
-            self.center_x = x
-            self.center_y = y
+        self.center_x = x
+        self.center_y = y
 
-            if self.label != None:
-                self.label.center_x = x
-                self.label.center_y = y
+        if self.label != None:
+            self.label.center_x = x
+            self.label.center_y = y
 
     def setInitialPosition(self,x,y):
         self.center_x = x

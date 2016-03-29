@@ -28,7 +28,7 @@ class Edge(Widget):
     x3 = NumericProperty(0)
     y3 = NumericProperty(0)
     
-    arrowWidth = NumericProperty(7)
+    arrowWidth = NumericProperty(5)
     arrowPoints = ReferenceListProperty( x1, y1, x2, y2, x3, y3)
 
     fromVertex = ObjectProperty(Vertex())

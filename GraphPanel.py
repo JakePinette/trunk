@@ -19,8 +19,14 @@ class GraphPanel(Widget):
     red = NumericProperty(1)
     green = NumericProperty(1)
     blue = NumericProperty(1)
+
+    lastX = NumericProperty(-1)
+    lastY = NumericProperty(-1)
+    dragging = BooleanProperty(False)
     namesOn = BooleanProperty(False)
     currentEdge = 0
+
+    dragSensitivity = NumericProperty(0.5)
 
     #NEW GRAPH
     def newGraph(self, numVertices):
@@ -41,7 +47,7 @@ class GraphPanel(Widget):
             vertex = Vertex()
             vertex.setID(x)
             vertex.pos = self.pos
-            vertex.setName(str(x))
+            vertex.setID(x)
             self.listOfVertices.append(vertex)
             self.add_widget(vertex)
 
@@ -89,10 +95,18 @@ class GraphPanel(Widget):
                                 numStart = -1
                         
                 self.addEdge(vertexFromIndex, vertexToIndex, edgeWeight)
+
+    #DRAG SENSITIVITY
+    def setDragSensitivity(self, sensitivity):
+        self.dragSensitivity = sensitivity
+
+    def getDragSensitivity(self):
+        return self.dragSensitivity
+    
     #RADIUS
     def setDefaultVertexRadius(self, radius):
         self.defaultRadius = radius
-        arrowWidth = (int)(round(radius/4.0))
+        arrowWidth = max(3,(int)(round(radius/5.0)))
         for v in range(0, len(self.listOfVertices)):
             self.listOfVertices[v].setRadius(radius)
         for e in range(0, len(self.listOfEdges)):
@@ -318,30 +332,53 @@ class GraphPanel(Widget):
         return self.listOfEdges[edgeNo]
 
 
-    #DRAG VERTICES
+    #DRAG VERTICES/GRAPH
     def on_touch_down(self, touch):
         for v in range(0, len(self.listOfVertices)):
             if self.listOfVertices[v].collide(touch.x, touch.y):
                 self.currentVertex = v
                 self.dataColector.getData(self.listOfVertices[v])
-                self.listOfVertices[v].click()
-                break
+                return
+        self.dragging = True
+        self.lastX = touch.x
+        self.lastY = touch.y
             
     def on_touch_up(self, touch):
         if self.currentVertex != (-1):
-            self.listOfVertices[self.currentVertex].unClick()
             self.currentVertex = -1
+            
+        self.dragging = False
         
     def on_touch_move(self, touch):
+        if self.collide_point(touch.x, touch.y) == False:
+            return
+        if self.dragging == True:
+            dragX = self.lastX - touch.x
+            dragY = self.lastY - touch.y
+            self.lastX = touch.x
+            self.lastY = touch.y
+            for v in range(0, len(self.listOfVertices)):
+                vertex = self.listOfVertices[v]
+                newX = vertex.getX() + dragX*self.dragSensitivity
+                newY = vertex.getY() + dragY*self.dragSensitivity
+                
+                vertex.setPosition(newX, newY)
+                
+                for e in vertex.getIncomingEdges():
+                    e.changeToCoordinates(newX, newY)
+                
+                for e in vertex.getOutgoingEdges():
+                    e.changeFromCoordinates(newX, newY)
+
+                
         if self.currentVertex != (-1):
             v = self.currentVertex
-            if self.listOfVertices[v].isClicked():
-                self.listOfVertices[v].setPosition(touch.x, touch.y)
-                for e in self.listOfVertices[v].getIncomingEdgeIndexes():
-                    self.listOfEdges[e].changeToCoordinates(touch.x, touch.y)
+            self.listOfVertices[v].setPosition(touch.x, touch.y)
+            for e in self.listOfVertices[v].getIncomingEdgeIndexes():
+                self.listOfEdges[e].changeToCoordinates(touch.x, touch.y)
                 
-                for j in self.listOfVertices[v].getOutgoingEdgeIndexes():
-                    self.listOfEdges[j].changeFromCoordinates(touch.x, touch.y)
+            for j in self.listOfVertices[v].getOutgoingEdgeIndexes():
+                self.listOfEdges[j].changeFromCoordinates(touch.x, touch.y)
     
     
     
