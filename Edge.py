@@ -4,8 +4,6 @@ from kivy.properties import NumericProperty, ObjectProperty, ReferenceListProper
 from kivy.lang import Builder
 from Vertex import Vertex
 import math
-Builder.load_file('GraphPanel.kv')
-
 
 class Edge(Widget):
 
