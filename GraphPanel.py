@@ -26,6 +26,9 @@ class GraphPanel(Widget):
     namesOn = BooleanProperty(False)
     currentEdge = 0
 
+    firstClick = BooleanProperty( False )
+    lastSelected = ObjectProperty( None )
+
     dragSensitivity = NumericProperty(0.5)
 
     #NEW GRAPH
@@ -338,6 +341,14 @@ class GraphPanel(Widget):
             if self.listOfVertices[v].collide(touch.x, touch.y):
                 self.currentVertex = v
                 self.dataColector.getData(self.listOfVertices[v])
+                if self.firstClick == False:
+                    self.firstClick = True
+                    self.lastSelected = self.listOfVertices[v]
+                    self.lastSelected.select()
+                else:
+                    self.lastSelected.unSelect()
+                    self.lastSelected = self.listOfVertices[v]
+                    self.lastSelected.select()
                 return
         self.dragging = True
         self.lastX = touch.x
@@ -353,8 +364,8 @@ class GraphPanel(Widget):
         if self.collide_point(touch.x, touch.y) == False:
             return
         if self.dragging == True:
-            dragX = self.lastX - touch.x
-            dragY = self.lastY - touch.y
+            dragX = touch.x - self.lastX
+            dragY = touch.y - self.lastY
             self.lastX = touch.x
             self.lastY = touch.y
             for v in range(0, len(self.listOfVertices)):
@@ -399,6 +410,8 @@ class GraphPanelApp(App):
         graphPanel.listOfVertices[0].setRGB(1,0,0)
         graphPanel.listOfVertices[2].setName("Hello")
         graphPanel.setNamesVisible()
+
+        graphPanel.listOfVertices[1].highlight()
 
         return graphPanel
 

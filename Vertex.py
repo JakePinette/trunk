@@ -6,7 +6,12 @@ from kivy.properties import BooleanProperty, StringProperty
 from kivy.properties import ObjectProperty
 import Edge
 from kivy.lang import Builder
+Builder.load_file('GraphPanel.kv')
 
+class Highlight(Widget):
+    LW = NumericProperty(1)
+    radius = NumericProperty(25)
+    
 class Vertex(Widget):
     
     red = NumericProperty(0.3)
@@ -24,10 +29,50 @@ class Vertex(Widget):
     name = StringProperty("")
     labelName = StringProperty('1')
     info = StringProperty("")
+    
     label = ObjectProperty( None )
+    highlight = ObjectProperty( None )
     
     namesOn = BooleanProperty(False)
+    highlighted = BooleanProperty(False)
+    selected = BooleanProperty(False)
 
+    def select(self):
+        if self.selected == False:
+            if self.highlighted == False:
+                h = Highlight()
+                h.radius = self.radius
+                self.highlight = h
+                self.add_widget(self.highlight)
+            self.highlight.pos[0] = self.center_x - self.radius
+            self.highlight.pos[1] = self.center_y - self.radius
+            self.selected = True
+            self.highlight.LW = 2
+
+
+    def unSelect(self):
+        self.selected = False
+        self.highlight.LW = 1
+        if self.highlighted == False:
+            self.remove_widget(self.highlight)
+
+    def highlight(self):
+        if self.highlighted == False:
+            if self.selected == False:
+                h = Highlight()
+                self.highlight = h
+                h.radius = self.radius
+                self.add_widget(self.highlight)
+            self.highlight.pos[0] = self.center_x - self.radius
+            self.highlight.pos[1] = self.center_y - self.radius
+
+            self.highlighted = True
+
+    def unHighlight(self):
+        self.highlighted = False
+        if self.selected == False:
+            self.remove_widget(self.highlight)
+        
     #Get/Set ID
     def setID(self, num):
         self.ID = num
@@ -42,6 +87,9 @@ class Vertex(Widget):
         self.radius = radius
         self.center_x = x
         self.center_y = y
+
+        if self.highlighted == True or self.selected == True:
+            self.highlight.radius = self.radius
 
     def getRadius(self):
         return self.radius
@@ -125,9 +173,19 @@ class Vertex(Widget):
         self.center_x = x
         self.center_y = y
 
+        for edge in self.incomingEdges:
+            edge.changeToCoordinates(x,y)
+
+        for edge in self.outgoingEdges:
+            edge.changeFromCoordinates(x,y)
+            
         if self.label != None:
             self.label.center_x = x
             self.label.center_y = y
+
+        if self.selected == True or self.highlighted == True:
+            self.highlight.pos[0] = self.center_x - self.radius
+            self.highlight.pos[1] = self.center_y - self.radius
 
     def setInitialPosition(self,x,y):
         self.center_x = x
@@ -142,6 +200,10 @@ class Vertex(Widget):
 
         for edge in self.outgoingEdges:
             edge.changeFromCoordinates(x,y)
+
+        if self.selected == True or self.highlighted == True:
+            self.highlight.pos[0] = self.center_x - self.radius
+            self.highlight.pos[1] = self.center_y - self.radius
 
     def getX(self):
         return self.center_x
