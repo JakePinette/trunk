@@ -75,7 +75,9 @@ class Vertex(Widget):
         
     #Get/Set ID
     def setID(self, num):
-        self.ID = num
+        if self.ID != num:
+            self.ID = num
+            self.setName(self.name)
 
     def getID(self):
         return self.ID

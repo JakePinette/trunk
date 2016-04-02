@@ -58,46 +58,28 @@ class GraphPanel(Widget):
     def setDataColector(self, colector):
         self.dataColector = colector
 
-    
-    #MAKE GRAPH FROM FILE
     def loadGraph(self, filePath):
-        numDeclaredEdges = -1
-        numAddedEdges = 0
-        verticesLoaded = False
-        edgeNumLoaded = False
         f = open(filePath)
-        for line in f.readlines():
-            if(verticesLoaded == False):
-                self.newGraph(int(line))
-                verticesLoaded = True
-            elif(edgeNumLoaded == False):
-                numDeclaredEdges = int(line)
-                edgeNumLoaded = True
+        v = int(f.readline())
+        e = int(f.readline())
+        self.newGraph(v)
+        #Read edge info
+        for i in range(0, e):
+            line = f.readline()
+            arr = line.split()
+            self.addEdge(int(arr[0]), int(arr[1]), float(arr[2]))
+        #Read vertex info (optional)
+        while True:
+            line = f.readline()
+            if line == "":
+                return
             else:
-                vertexFromIndex = -1
-                vertexToIndex = -1
-                edgeWeight = 0
-                numStart = -1
-                for i in range(0, len(line)-1):
-                    if(line[i]!=" "):
-                            if(numStart<0):
-                                numStart = i
-                    else:
-                        if(numStart > -1):
-                            if(vertexFromIndex<0):
-                                vertexFromIndex = int(line[numStart:i])
-                                numStart = -1
-                                
-                            elif(vertexToIndex<0):
-                                vertexToIndex = int(line[numStart:i])
-                                numStart = -1
-
-                            else:
-                                
-                                vertexToIndex = float(line[numStart:i])
-                                numStart = -1
-                        
-                self.addEdge(vertexFromIndex, vertexToIndex, edgeWeight)
+                arr = line.split("|")
+                vNo = int(arr[0].strip())
+                if len(arr) == 2:
+                    self.setVertexName(vNo, arr[1].strip())
+                else:
+                    self.setVertexNameInfo(vNo, arr[1].strip(), arr[2].strip())
 
     #DRAG SENSITIVITY
     def setDragSensitivity(self, sensitivity):
@@ -109,7 +91,7 @@ class GraphPanel(Widget):
     #RADIUS
     def setDefaultVertexRadius(self, radius):
         self.defaultRadius = radius
-        arrowWidth = max(3,(int)(round(radius/5.0)))
+        arrowWidth = max(2,(int)(round(radius/6.0)))
         for v in range(0, len(self.listOfVertices)):
             self.listOfVertices[v].setRadius(radius)
         for e in range(0, len(self.listOfEdges)):

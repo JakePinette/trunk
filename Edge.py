@@ -28,7 +28,7 @@ class Edge(Widget):
     x3 = NumericProperty(0)
     y3 = NumericProperty(0)
     
-    arrowWidth = NumericProperty(5)
+    arrowWidth = NumericProperty(4)
     arrowPoints = ReferenceListProperty( x1, y1, x2, y2, x3, y3)
 
     fromVertex = ObjectProperty(Vertex())
@@ -120,7 +120,7 @@ class Edge(Widget):
         w = self.arrowWidth*self.arrowWidth
         midX = (self.x + self.xx)/2
         midY = (self.y + self.yy)/2
-        slope = (self.yy - self.y)/(self.xx - self.x)
+        slope = (self.yy - self.y + 0.0)/(self.xx - self.x)
         invSlope = -1.0/slope
         xMove = (int)(w/(1 + invSlope*invSlope))**(0.5)
         yMove = (int)(w - (w/(1 + invSlope*invSlope)))**(0.5)
