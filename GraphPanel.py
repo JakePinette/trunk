@@ -363,7 +363,16 @@ class GraphPanel(Widget):
     def on_touch_move(self, touch):
         if self.collide_point(touch.x, touch.y) == False:
             return
-        if self.dragging == True:
+        if self.currentVertex != (-1):
+            v = self.currentVertex
+            self.listOfVertices[v].setPosition(touch.x, touch.y)
+            for e in self.listOfVertices[v].getIncomingEdgeIndexes():
+                self.listOfEdges[e].changeToCoordinates(touch.x, touch.y)
+                
+            for j in self.listOfVertices[v].getOutgoingEdgeIndexes():
+                self.listOfEdges[j].changeFromCoordinates(touch.x, touch.y)
+                
+        elif self.dragging == True:
             dragX = touch.x - self.lastX
             dragY = touch.y - self.lastY
             self.lastX = touch.x
@@ -382,14 +391,7 @@ class GraphPanel(Widget):
                     e.changeFromCoordinates(newX, newY)
 
                 
-        if self.currentVertex != (-1):
-            v = self.currentVertex
-            self.listOfVertices[v].setPosition(touch.x, touch.y)
-            for e in self.listOfVertices[v].getIncomingEdgeIndexes():
-                self.listOfEdges[e].changeToCoordinates(touch.x, touch.y)
-                
-            for j in self.listOfVertices[v].getOutgoingEdgeIndexes():
-                self.listOfEdges[j].changeFromCoordinates(touch.x, touch.y)
+        
     
     
     
