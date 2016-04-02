@@ -15,8 +15,8 @@ from GraphPanel import GraphPanel
 from kivy.uix.popup import Popup
 from kivy.uix.colorpicker import ColorPicker
 
-class ColorButton(Widget):
-
+#BG COLOR BUTTON
+class backgroundColorButton(Button):
     graph = ObjectProperty( GraphPanel())
     popupp = ObjectProperty( Popup())
     clrpkr = ObjectProperty(ColorPicker())
@@ -28,6 +28,7 @@ class ColorButton(Widget):
             self.popupp.open()
     
     def initialize(self, graph):
+        self.text = "Background color"
         self.graph = graph
         self.box = BoxLayout(orientation='vertical', size_hint=(1,1))
         self.clrpkr = ColorPicker(size_hint=(1,0.9)) 
@@ -48,16 +49,50 @@ class ColorButton(Widget):
         self.on_color()
         self.popupp.dismiss()
 
+#VERTEX COLOR BUTTON
+class vertexColorButton(Button):
+    graph = ObjectProperty( GraphPanel())
+    popupp = ObjectProperty( Popup())
+    clrpkr = ObjectProperty(ColorPicker())
+    box = ObjectProperty(BoxLayout())
+    button = ObjectProperty(Button())
+
+    def on_touch_down(self, touch):
+        if self.collide_point(touch.x, touch.y):
+            self.popupp.open()
+    
+    def initialize(self, graph):
+        self.text = "Vertex color"
+        self.graph = graph
+        self.box = BoxLayout(orientation='vertical', size_hint=(1,1))
+        self.clrpkr = ColorPicker(size_hint=(1,0.9)) 
+        self.button = Button(text='Done', size_hint=(1,0.1))
+        self.button.bind(on_press=self.close)
+        self.box.add_widget(self.clrpkr)
+        self.box.add_widget(self.button)
+        self.popupp = Popup(title='Choose your color', content=self.box,size_hint=(None, None), size=(400, 450))
+    
+    def on_color(self):
+        listColor = self.clrpkr.color
+        r = listColor[0]
+        g = listColor[1]
+        b = listColor[2]
+        self.graph.setAllVertexRGB(r,g,b)
+
+    def close(self, touch):
+        self.on_color()
+        self.popupp.dismiss()
 
 class testApp(App):
     def build(self):
         content = BoxLayout()
-        colorP = ColorButton()
+        colorBG = backgroundColorButton()
+        colorV = vertexColorButton()
         graphPanel = GraphPanel()
     
         graphPanel.newGraph(4)
-        graphPanel.setVertexPosition(0, 500, 100)
-        graphPanel.setVertexPosition(1, 600, 200)
+        graphPanel.setVertexPosition(0, 600, 100)
+        graphPanel.setVertexPosition(1, 650, 200)
         graphPanel.setVertexPosition(2, 700, 100)
         graphPanel.setVertexPosition(3, 600, 300)
         graphPanel.addEdge(0, 1, 4)
@@ -65,9 +100,11 @@ class testApp(App):
         graphPanel.addEdge(1, 0 ,2)
         graphPanel.addEdge(0, 3, 8)
 
-        colorP.initialize(graphPanel)
+        colorBG.initialize(graphPanel)
+        colorV.initialize(graphPanel)
 
-        content.add_widget(colorP)
+        content.add_widget(colorBG)
+        content.add_widget(colorV)
         content.add_widget(graphPanel)
 
         return content
