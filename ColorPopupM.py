@@ -20,25 +20,33 @@ class ColorButton(Widget):
     graph = ObjectProperty( GraphPanel())
     popupp = ObjectProperty( Popup())
     clrpkr = ObjectProperty(ColorPicker())
+    box = ObjectProperty(BoxLayout())
+    button = ObjectProperty(Button())
 
     def on_touch_down(self, touch):
         if self.collide_point(touch.x, touch.y):
-            print("hit")
             self.popupp.open()
     
     def initialize(self, graph):
         self.graph = graph
-        self.clrpkr =ColorPicker()
-        self.popupp = Popup(title='Choose your color', content=self.clrpkr,size_hint=(None, None), size=(400, 400))
+        self.box = BoxLayout(orientation='vertical', size_hint=(1,1))
+        self.clrpkr = ColorPicker(size_hint=(1,0.9)) 
+        self.button = Button(text='Done', size_hint=(1,0.1))
+        self.button.bind(on_press=self.close)
+        self.box.add_widget(self.clrpkr)
+        self.box.add_widget(self.button)
+        self.popupp = Popup(title='Choose your color', content=self.box,size_hint=(None, None), size=(400, 450))
     
-    def on_color(self, ColorPicker, GraphPanel, bkgrndBln):
-        r = ColorPicker.r
-        b = ColorPicker.b
-        g = ColorPicker.g 
-        if bkgrndBln == true :
-            GraphPanel.setBackgroundRGB(GraphPanel, r,g,b)
-        else:
-            GraphPanel.setAllVertexRGB(GraphPanel, r, g, b)
+    def on_color(self):
+        listColor = self.clrpkr.color
+        r = listColor[0]
+        g = listColor[1]
+        b = listColor[2]
+        self.graph.setBackgroundRGB(r,g,b)
+
+    def close(self, touch):
+        self.on_color()
+        self.popupp.dismiss()
 
 
 class testApp(App):
