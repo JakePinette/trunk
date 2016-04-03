@@ -21,6 +21,12 @@ class Vertex(Widget):
     radius = NumericProperty(25)
     ID = NumericProperty(1)
 
+    #Properties for use in Bellman Ford Searching
+    bFParentExists = BooleanProperty(False)
+    bFParent = ObjectProperty(None)
+    bFDistanceExists = BooleanProperty(False)
+    bFDistance = NumericProperty(0)
+
     incomingEdgeIndexes = ListProperty([])
     outgoingEdgeIndexes = ListProperty([])
     incomingEdges = ListProperty([])
@@ -72,12 +78,35 @@ class Vertex(Widget):
         self.highlighted = False
         if self.selected == False:
             self.remove_widget(self.highlight)
+            
+    #Get/Set Bellman Ford properties
+    def setBFParentExists(self, truthValue):
+        self.bFParentExists = truthValue
+
+    def getBFParentExists(self):
+        return self.bFParentExists
+
+    def setBFParent(self, newParent):
+        self.bFParent = newParent
+
+    def getBFParent(self):
+        return self.bFParent
+
+    def setBFDistanceExists(self, truthValue):
+        self.bFDistanceExists = truthValue
+
+    def getBFDistanceExists(self):
+        return self.bFDistanceExists
+
+    def setBFDistance(self, newDist):
+        self.bFDistance = newDist
+
+    def getBFDistance(self):
+        return self.bFDistance 
         
     #Get/Set ID
     def setID(self, num):
-        if self.ID != num:
-            self.ID = num
-            self.setName(self.name)
+        self.ID = num
 
     def getID(self):
         return self.ID
