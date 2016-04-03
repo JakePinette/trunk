@@ -17,7 +17,7 @@ class BellmanFord():
             for node in Graph.getVertexList():
                 if(node.getBFParentExists() == True or node.getID() == startNodeIndex):
                     for e in node.getOutgoingEdges():
-                        if((e.getToVertex()).getBFParentExists() == False):
+                        if((e.getToVertex()).getBFParentExists() == False and node.getID() != startNodeIndex):
                             (e.getToVertex()).setBFParent(e)
                             (e.getToVertex()).setBFDistance(node.getBFDistance()+e.getWeight())
                             (e.getToVertex()).setBFParentExists(True)
