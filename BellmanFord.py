@@ -9,6 +9,8 @@ class BellmanFord():
         path = []
         c = True
         nodeInFocus = Graph.getVertex(endNodeIndex)
+        Graph.clearHighlights()
+        nodeInFocus.highlight()
         for v in Graph.getVertexList():
             v.setBFParentExists(False)
         (Graph.getVertex(startNodeIndex)).setBFDistance(0)
@@ -27,8 +29,9 @@ class BellmanFord():
         while(c == True):
             edgeInFocus = nodeInFocus.getBFParent()
             nodeInFocus = edgeInFocus.getFromVertex()
+            nodeInFocus.highlight()
             path.append(edgeInFocus)
-            if(nodeInFocus.getID == endNodeIndex):
+            if(nodeInFocus.getID == startNodeIndex):
                 c = False
         path.reverse()
         return path 
