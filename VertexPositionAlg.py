@@ -412,7 +412,7 @@ class vizButton(Widget):
 
     def on_touch_down(self, touch):
         if self.collide_point(touch.x, touch.y):
-            self.g.newGraph(300)
+            self.g.loadGraph("tinyEWDnc.txt")
             self.g.setNamesVisible()
 
             visualize(self.g)

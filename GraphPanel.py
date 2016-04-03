@@ -35,15 +35,6 @@ class GraphPanel(Widget):
 
     #NEW GRAPH
     def newGraph(self, numVertices):
-        if numVertices > 250:
-            print('Woah there! Pick a smaller graph!')
-            Btn = Button(text="Okay", size_hint=(1,1))
-            popup = Popup(size_hint=(None,None),size=(300,200),\
-                      title='Woah there! Pick a smaller graph!')
-            Btn.bind(on_press=popup.dismiss)
-            popup.content=Btn
-            popup.open()
-            return False
         #First, tear down the old graph
         self.currentVertex = -1
         self.currentEdge = 0
@@ -64,8 +55,6 @@ class GraphPanel(Widget):
             vertex.setID(x)
             self.listOfVertices.append(vertex)
             self.add_widget(vertex)
-            vertex.setAlpha(0)
-        return True
 
     #SET DATA COLECTOR
     def setDataColector(self, colector):
@@ -75,6 +64,15 @@ class GraphPanel(Widget):
         f = open(filePath)
         v = int(f.readline())
         e = int(f.readline())
+        if (v + e) > 3000:
+            print('Woah there! Pick a smaller graph!')
+            Btn = Button(text="Okay", size_hint=(1,1))
+            popup = Popup(size_hint=(None,None),size=(300,200),\
+                      title='Woah there! Pick a smaller graph!')
+            Btn.bind(on_press=popup.dismiss)
+            popup.content=Btn
+            popup.open()
+            return False
         valid = self.newGraph(v)
         if valid == False:
             return
