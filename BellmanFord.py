@@ -11,6 +11,7 @@ class BellmanFord():
         nodeInFocus = Graph.getVertex(endNodeIndex)
         Graph.clearHighlights()
         nodeInFocus.highlight()
+        globalTraversalCost = 0
         for v in Graph.getVertexList():
             v.setBFParentExists(False)
         (Graph.getVertex(startNodeIndex)).setBFDistance(0)
@@ -31,6 +32,9 @@ class BellmanFord():
             nodeInFocus = edgeInFocus.getFromVertex()
             nodeInFocus.highlight()
             path.append(edgeInFocus)
+            globalTraversalCost = globalTraversalCost+1
+            if(globalTraversalCost >= len(Graph.getVertexList()):
+               return False
             if(nodeInFocus.getID == startNodeIndex):
                 c = False
         path.reverse()
