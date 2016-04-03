@@ -28,6 +28,8 @@ def isTree(graphPanel):
         return None
 
 def visualize(graphPanel):
+    if len(graphPanel.listOfVertices) < 1:
+        return
     v = isTree(graphPanel)
     if v == None:
         visualizeArbitraryGraph(graphPanel)
@@ -410,7 +412,7 @@ class vizButton(Widget):
 
     def on_touch_down(self, touch):
         if self.collide_point(touch.x, touch.y):
-            self.g.loadGraph('tinyEWDnc.txt')
+            self.g.newGraph(300)
             self.g.setNamesVisible()
 
             visualize(self.g)
