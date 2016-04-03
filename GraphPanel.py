@@ -60,6 +60,10 @@ class GraphPanel(Widget):
     def setDataColector(self, colector):
         self.dataColector = colector
 
+    def clearHighlights(self):
+        for v in range(0, len(self.listOfVertices)):
+            self.listOfVertices[v].unHighlight()
+
     def loadGraph(self, filePath):
         f = open(filePath)
         v = int(f.readline())
@@ -409,6 +413,10 @@ class GraphPanelApp(App):
         graphPanel.setNamesVisible()
 
         graphPanel.listOfVertices[1].highlight()
+        graphPanel.listOfVertices[2].highlight()
+        graphPanel.listOfVertices[3].highlight()
+        graphPanel.listOfVertices[0].highlight()
+        graphPanel.clearHighlights()
 
         return graphPanel
 
