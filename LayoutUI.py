@@ -6,6 +6,7 @@ from kivy.uix.label import Label
 from kivy.uix.tabbedpanel import TabbedPanel
 from kivy.uix.widget import Widget
 from kivy.uix.button import Button
+from kivy.uix.popup import Popup
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.anchorlayout import AnchorLayout
@@ -14,36 +15,46 @@ from kivy.lang import Builder
 from GraphPanel import GraphPanel
 from InfoPanel import InfoPanel
 from SearchPanel import SearchPanel
-
+from VertexPositionAlg import resetButton
+from ColorPopupM import vertexColorButton, backgroundColorButton
+from NbhPanel import NbhPanel
 
 #loading the LayoutUI specifications
 Builder.load_file("LayoutUI.kv")
 
 #Initializing the Test class (Renamed later)
 class Toolbar(TabbedPanel):
-
+    
     infoPanel = ObjectProperty(InfoPanel(size_hint=(1, 0.8)))
     searchPanel = ObjectProperty(SearchPanel(size_hint=(1, 1)))
     
-    def Initalize(self):
-        btnfill = Button(text="Neighbourhood", size_hint=(1,0.2))
+    def Initalize(self, graph):
+        nbhPanel = NbhPanel()
         
         info = InfoPanel(size_hint=(1, 0.8))
         self.infoPanel = info
         box = BoxLayout(orientation='vertical')
         box.add_widget(info)
-        box.add_widget(btnfill)
-
+        tinybox2 = BoxLayout(size_hint=(1, 0.2))
+        box.add_widget(tinybox2)
+        tinybox2.add_widget(nbhPanel)
+        
         search = SearchPanel(size_hint=(1, 1))
         self.searchPanel = search
+        resetBtn = resetButton()
+        
+        resetBtn.initialize(graph)
+        nbhPanel.initialize(graph)
         
         gbox = BoxLayout(orientation='vertical')
         gbox.add_widget(search)
+        
+        tinybox = BoxLayout(size_hint=(1, 0.2))
+        tinybox.add_widget(resetBtn)
+        
+        gbox.add_widget(tinybox)
 
-        
-        
         self.ids.Node.add_widget(box)
-
         self.ids.Graph.add_widget(gbox)
         
         
@@ -66,12 +77,22 @@ class BuildLayout(App):
         ToolBarHolder = AnchorLayout(anchor_x='right', andchor_y='bottom')
         #^^^^ Basic Layouts ^^^^
 
+        #HELP POPUP
+        helpWin = Popup(title='Help', content=Label(text='This will be the help window'), size_hint=(None, None), size=(400, 400))
+
         #this is the top bar
         TopBar = BoxLayout(size_hint=(0.75, 1))
         #vvvv And contents of Top Bar vvvv
         btnOpenFile = Button(text='Open new File')
+        bgCol = backgroundColorButton(text='background Col')
+        vertexCol = vertexColorButton(text='vertex Col')
         btnDisplay = Button(text='Display')
+
+
+
+        
         btnHelp = Button(text='help')
+        btnHelp.bind(on_touch_down=helpWin.open)
         
         #vvvv this is the Tabbed Box on the right side vvvv
         ToolBar = Toolbar(size_hint=(0.25, 1))
@@ -118,11 +139,15 @@ class BuildLayout(App):
         
         TopBarHolder.add_widget(TopBar)
         TopBar.add_widget(btnOpenFile)
-        TopBar.add_widget(btnDisplay)
+        TopBar.add_widget(bgCol)
+        TopBar.add_widget(vertexCol)
         TopBar.add_widget(btnHelp)
-
-        ToolBar.Initalize()
-
+        
+        ToolBar.Initalize(graphPanel)
+        bgCol.initialize(graphPanel)
+        vertexCol.initialize(graphPanel)
+        
+        
         graphPanel.setDataColector(ToolBar.infoPanel)
 
         

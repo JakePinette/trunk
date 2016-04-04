@@ -2,11 +2,11 @@
 
     BoxLayout:
         size: root.size
-        pos: root.size
+        pos: root.pos
         
         Button:
-            text: 'Neibourhood Size'
-            on_release: root.set
+            text: 'Highlight \nSubgraph \nof radius: '
+            on_release: root.touching()
 
         TextInput:
             id: sizeBox
