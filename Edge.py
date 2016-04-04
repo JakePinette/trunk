@@ -4,7 +4,6 @@ from kivy.properties import NumericProperty, ObjectProperty, ReferenceListProper
 from kivy.lang import Builder
 from Vertex import Vertex
 import math
-Builder.load_file('GraphPanel.kv')
 
 
 class Edge(Widget):
@@ -80,7 +79,7 @@ class Edge(Widget):
     def setWeight(self, weight):
         self.weight = weight
 
-    def getWeight(self, weight):
+    def getWeight(self):
         return self.weight
 
     #MOVE FUNCTIONS

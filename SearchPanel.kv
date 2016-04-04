@@ -1,0 +1,33 @@
+<SearchPanel>:
+
+    GridLayout:
+        size: root.size
+        pos: root.pos
+        cols: 2
+        rows: 3
+
+        Button:
+            text: 'From: '
+            on_release: root.set_fromVertex()
+
+        TextInput:
+            id: fromBox
+            multiline: False
+            text: root.currentVertexNo
+            readonly:False
+
+        Label:
+            text: " -> "
+
+        Button:
+            text: 'To: '
+            on_release: root.set_toVertex()
+
+        TextInput:
+            id: toBox
+            multiline: False
+            text: root.nextVertexNo
+            readonly: False
+
+
+            

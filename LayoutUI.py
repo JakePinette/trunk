@@ -13,7 +13,7 @@ from kivy.properties import ObjectProperty
 from kivy.lang import Builder
 from GraphPanel import GraphPanel
 from InfoPanel import InfoPanel
-
+#from ColorPopupM import ColorPopupM
 #loading the LayoutUI specifications
 Builder.load_file("LayoutUI.kv")
 
