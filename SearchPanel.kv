@@ -1,33 +1,41 @@
 <SearchPanel>:
 
-    GridLayout:
+    BoxLayout:
         size: root.size
         pos: root.pos
-        cols: 2
-        rows: 3
+        orientation: 'vertical'
+        
+        BoxLayout:
+            size_hint: 1, 0.1
+            Button:
+                text: 'From: '
+                on_release: root.set_fromVertex(root.workingGraph)
 
-        Button:
-            text: 'From: '
-            on_release: root.set_fromVertex()
+            TextInput:
+                id: fromBox
+                multiline: False
+                text: root.currentVertexNo
+                readonly:False
 
-        TextInput:
-            id: fromBox
-            multiline: False
-            text: root.currentVertexNo
-            readonly:False
+            Label:
+                text: " -> "
 
-        Label:
-            text: " -> "
+            Button:
+                text: 'To: '
+                on_release: root.set_toVertex(root.workingGraph)
 
-        Button:
-            text: 'To: '
-            on_release: root.set_toVertex()
+            TextInput:
+                id: toBox
+                multiline: False
+                text: root.nextVertexNo
+                readonly: False
 
-        TextInput:
-            id: toBox
-            multiline: False
-            text: root.nextVertexNo
-            readonly: False
+        BoxLayout:
+                
+            TextInput:
+                id: pathBox
+                multiline: True
+                text: root.path
+                readonly: True
 
-
-            
+        
