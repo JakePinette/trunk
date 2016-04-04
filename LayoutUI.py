@@ -110,27 +110,15 @@ class BuildLayout(App):
 
 
         #vvvv GraphPanel settings vvvv
-        graphPanel.newGraph(4)
-        graphPanel.setVertexPosition(0, 100, 100)
-        graphPanel.setVertexPosition(1, 200, 200)
-        graphPanel.setVertexPosition(2, 300, 100)
-        graphPanel.setVertexPosition(3, 200, 300)
-        graphPanel.addEdge(0, 1, 4)
-        graphPanel.addEdge(1, 2, 5)
-        graphPanel.addEdge(2, 1, 6)
-        graphPanel.addEdge(1, 3, 7)
-        graphPanel.addEdge(0, 3, 8)
-
-        graphPanel.listOfVertices[1].setRadius(10)
-        graphPanel.listOfVertices[0].setRGB(1,0,0)
-        graphPanel.listOfVertices[2].setName("Hello")
+        graphPanel.loadGraph("graphExample.txt")
         graphPanel.setNamesVisible()
         #^^^^ GraphPanel settings ^^^^ 
    
 
         #vvvv Adding everything to the UI vvvv
-        layout.add_widget(TopBarHolder)
         layout.add_widget(RemainingHolder)
+        layout.add_widget(TopBarHolder)
+        RemainingHolder.add_widget(graphPanel)
         layout.add_widget(ToolBarHolder)
         
         
@@ -147,11 +135,10 @@ class BuildLayout(App):
         bgCol.initialize(graphPanel)
         vertexCol.initialize(graphPanel)
         
-        
         graphPanel.setDataColector(ToolBar.infoPanel)
 
         
-        RemainingHolder.add_widget(graphPanel)
+        
         #^^^^ Adding everything to the UI ^^^^
 
         

@@ -54,7 +54,7 @@ class NbhPanel(Widget):
             return
         if self.workingGraph.lastSelected == None:
             return
-        bfs(self.workingGraph.lastSelected, self.nbhSize, self.workingGraph)
+        bfs(self.workingGraph.lastSelected, int(self.nbhSize), self.workingGraph)
 
     def touching(self): #hehehehehe
         self.set_NbhSize()

@@ -19,50 +19,28 @@ from VertexPositionAlg import visualize
 
 
     #root is a vertex, and depth is an integer
-def bfs( root, depth, graphPanel):
-	clearSlate(graphPanel)
+def bfs(root, depth, graphPanel):
+	graphPanel.clearHighlights()
 	q = Queue.Queue()
 	q.put(root)
-	dist = 0
-	root.setBFSDistFromRoot(0)
-	root.setBFSColor("grey")
 		
 	root.highlight()
-		
-	while (q.empty() == False):
-		curVertex = q.get()
-		curVertex.highlight()
-		for e in curVertex.getOutgoingEdges():
-			newV= e.getToVertex()
-				
-			
-			
-			if newV.getBFSColor() == "white":
-				newV.setBFSDistFromRoot(curVertex.getBFSDistFromRoot()+1)
-				if(newV.getBFSDistFromRoot() <= depth):
-					newV.setBFSColor("grey")
-					
-					q.put(newV)
-					
-			elif newV.getBFSColor() == "grey":
-				#if grey then its already in the queue
-				break
-			elif newV.getBFSColor() == "black":
-				#if its black then its already been explored
-				break
-			
-		curVertex.setBFSColor("black")
-		
-		
-		
-def clearSlate(g):
-	
-	for v in range(0,len(g.listOfVertices)):
-		g.listOfVertices[v].unHighlight()
-		g.listOfVertices[v].setBFSColor("white")
-		
-		g.listOfVertices[v].setBFSDistFromRoot(-1)
+	added = []
+	for x in range(0, len(graphPanel.listOfVertices)):
+                added.append(False)
 
+        for x in range(0, depth+1):
+                nodes = []
+                while q.empty() == False:
+                        nodes.append(q.get())
+                for x in nodes:
+                        x.highlight()
+                        for e in x.getOutgoingEdges():
+                                newV = e.getToVertex()
+                                ID = newV.getID()
+                                if added[ID] == False:
+                                        added[ID] = True
+                                        q.put(newV)
 class testButton(Button):
 	g = ObjectProperty(GraphPanel())
 	

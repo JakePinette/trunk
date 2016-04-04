@@ -2,13 +2,14 @@ from kivy.app import App
 from kivy.uix.widget import Widget
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.boxlayout import BoxLayout
-from kivy.properties import StringProperty, ObjectProperty
+from kivy.properties import StringProperty, ObjectProperty, ListProperty
 from Edge import Edge
 from Vertex import Vertex
 from kivy.lang import Builder
 from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
 from GraphPanel import GraphPanel
+from BellmanFord import BellmanFord
 
 Builder.load_file('SearchPanel.kv')
 
@@ -23,6 +24,8 @@ class SearchPanel(Widget):
     workingGraph = ObjectProperty(GraphPanel())
 
     path = StringProperty()
+
+    listpath = ListProperty()
     
     def __init__(self, **kwargs):
         super(SearchPanel, self).__init__(**kwargs)
@@ -62,6 +65,9 @@ class SearchPanel(Widget):
         self.set_fromVertex(graph)
         self.set_toVertex(graph)
         
+    def doSearch(self, graph, fromN, toN):
+        bfsearch = BellmanFord()
+        self.listPath = bfsearch.findShortestPath(self.workingGraph, self.currentVertex.getID(), self.nextVertex.getID())
         
 class buildSearchPanel(App):
     def build(self):
