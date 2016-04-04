@@ -9,7 +9,7 @@ from kivy.lang import Builder
 Builder.load_file('GraphPanel.kv')
 
 class Highlight(Widget):
-    LW = NumericProperty(1)
+    color = ListProperty((0,0,0))
     radius = NumericProperty(25)
     
 class Vertex(Widget):
@@ -21,12 +21,6 @@ class Vertex(Widget):
     radius = NumericProperty(25)
     ID = NumericProperty(1)
 
-    #Properties for use in Bellman Ford Searching
-    bFParentExists = BooleanProperty(False)
-    bFParent = ObjectProperty(None)
-    bFDistanceExists = BooleanProperty(False)
-    bFDistance = NumericProperty(0)
-
     incomingEdgeIndexes = ListProperty([])
     outgoingEdgeIndexes = ListProperty([])
     incomingEdges = ListProperty([])
@@ -37,49 +31,23 @@ class Vertex(Widget):
     info = StringProperty("")
     
     label = ObjectProperty( None )
-    highlight = ObjectProperty( None )
+    highlightObj = ObjectProperty( None )
     
     namesOn = BooleanProperty(False)
     highlighted = BooleanProperty(False)
     selected = BooleanProperty(False)
 
-    def select(self):
-        if self.selected == False:
-            if self.highlighted == False:
-                h = Highlight()
-                h.radius = self.radius
-                self.highlight = h
-                self.add_widget(self.highlight)
-            self.highlight.pos[0] = self.center_x - self.radius
-            self.highlight.pos[1] = self.center_y - self.radius
-            self.selected = True
-            self.highlight.LW = 2
-
-
-    def unSelect(self):
-        self.selected = False
-        self.highlight.LW = 1
-        if self.highlighted == False:
-            self.remove_widget(self.highlight)
-
-    def highlight(self):
-        if self.highlighted == False:
-            if self.selected == False:
-                h = Highlight()
-                self.highlight = h
-                h.radius = self.radius
-                self.add_widget(self.highlight)
-            self.highlight.pos[0] = self.center_x - self.radius
-            self.highlight.pos[1] = self.center_y - self.radius
-
-            self.highlighted = True
-
-    def unHighlight(self):
-        self.highlighted = False
-        if self.selected == False:
-            self.remove_widget(self.highlight)
-            
-    #Get/Set Bellman Ford properties
+	#breadth first search properties
+    bfsCol = StringProperty("white")
+    bfsDistFromRoot = NumericProperty(40)
+	
+	#Properties for use in Bellman Ford Searching
+    bFParentExists = BooleanProperty(False)
+    bFParent = ObjectProperty(None)
+    bFDistanceExists = BooleanProperty(False)
+    bFDistance = NumericProperty(0)
+	
+	    #Get/Set Bellman Ford properties
     def setBFParentExists(self, truthValue):
         self.bFParentExists = truthValue
 
@@ -102,13 +70,50 @@ class Vertex(Widget):
         self.bFDistance = newDist
 
     def getBFDistance(self):
-        return self.bFDistance 
+        return self.bFDistance
+    
+	
+    def select(self):
+        if self.selected == False:
+            if self.highlighted == False:
+                h = Highlight()
+                h.radius = self.radius
+                self.highlightObj = h
+                self.add_widget(self.highlightObj)
+            self.highlightObj.pos[0] = self.center_x - self.radius
+            self.highlightObj.pos[1] = self.center_y - self.radius
+            self.selected = True
+            self.highlightObj.color = (1-self.red, 1-self.green, 1 - self.blue)
+
+
+    def unSelect(self):
+        self.selected = False
+        self.highlightObj.color = (1,1,1)
+        if self.highlighted == False:
+            self.remove_widget(self.highlightObj)
+
+    def highlight(self):
+        if self.highlighted == False:
+            if self.selected == False:
+                h = Highlight()
+                self.highlightObj = h
+                h.radius = self.radius
+                self.add_widget(self.highlightObj)
+            self.highlightObj.pos[0] = self.center_x - self.radius
+            self.highlightObj.pos[1] = self.center_y - self.radius
+
+            self.highlighted = True
+
+    def unHighlight(self):
+        self.highlighted = False
+        if self.selected == False:
+            self.remove_widget(self.highlightObj)
         
     #Get/Set ID
     def setID(self, num):
         if self.ID != num:
-           self.ID = num
-           self.setName(self.name)
+            self.ID = num
+            self.setName(self.name)
 
     def getID(self):
         return self.ID
@@ -122,7 +127,7 @@ class Vertex(Widget):
         self.center_y = y
 
         if self.highlighted == True or self.selected == True:
-            self.highlight.radius = self.radius
+            self.highlightObj.radius = self.radius
 
     def getRadius(self):
         return self.radius
@@ -217,8 +222,8 @@ class Vertex(Widget):
             self.label.center_y = y
 
         if self.selected == True or self.highlighted == True:
-            self.highlight.pos[0] = self.center_x - self.radius
-            self.highlight.pos[1] = self.center_y - self.radius
+            self.highlightObj.pos[0] = self.center_x - self.radius
+            self.highlightObj.pos[1] = self.center_y - self.radius
 
     def setInitialPosition(self,x,y):
         self.center_x = x
@@ -235,8 +240,8 @@ class Vertex(Widget):
             edge.changeFromCoordinates(x,y)
 
         if self.selected == True or self.highlighted == True:
-            self.highlight.pos[0] = self.center_x - self.radius
-            self.highlight.pos[1] = self.center_y - self.radius
+            self.highlightObj.pos[0] = self.center_x - self.radius
+            self.highlightObj.pos[1] = self.center_y - self.radius
 
     def getX(self):
         return self.center_x
@@ -274,6 +279,16 @@ class Vertex(Widget):
         if ((self.center_x - x)**(2) + (self.center_y - y)**(2)) <= self.radius**2:
             return True
         return False
+	#breadth first search methods needed
+
+    def getBFSDistFromRoot(self):
+        return self.bfsDistFromRoot
+    def setBFSDistFromRoot(self, int):
+        self.bfsDistFromRoot = int
+    def getBFSColor(self):
+        return self.bfsCol
+    def setBFSColor(self, color):
+        self.bfsCol = color
 
 
 class MainPanel(Widget):
