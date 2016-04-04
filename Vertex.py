@@ -175,21 +175,31 @@ class Vertex(Widget):
         self.red = red
         self.green = green
         self.blue = blue
+        if self.selected == True:
+            self.highlightObj.color = (1-self.red, 1-self.green, 1 - self.blue)
 
     def setRGBA(self, red, green, blue, alpha):
         self.red = red
         self.green = green
         self.blue = blue
         self.alpha = alpha
+        if self.selected == True:
+            self.highlightObj.color = (1-self.red, 1-self.green, 1 - self.blue)
 
     def setRed(self, red):
         self.red = red
+        if self.selected == True:
+            self.highlightObj.color = (1-self.red, 1-self.green, 1 - self.blue)
 
     def setGreen(self, green):
         self.green = green
+        if self.selected == True:
+            self.highlightObj.color = (1-self.red, 1-self.green, 1 - self.blue)
 
     def setBlue(self, blue):
         self.blue = blue
+        if self.selected == True:
+            self.highlightObj.color = (1-self.red, 1-self.green, 1 - self.blue)
 
     def setAlpha(self, alpha):
         self.alpha = alpha
