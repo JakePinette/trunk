@@ -1,5 +1,6 @@
 import Queue
 import math
+from kivy.uix.button import Button
 from kivy.app import App
 from kivy.uix.widget import Widget
 from kivy.properties import ObjectProperty
@@ -7,8 +8,6 @@ from kivy.uix.boxlayout import BoxLayout
 from GraphPanel import GraphPanel
 import Edge
 from Vertex import Vertex
-
-import random
 
 def isTree(graphPanel):
     isTree = False
@@ -284,7 +283,8 @@ def visualizeArbitraryGraph(graph):
 
     deltaX = xMax - xMin
     deltaY = yMax - yMin
-    xScale = ((deltaY/(deltaX+0.0))/(height/(0.0+width)))
+    #xScale = ((deltaY/(deltaX+0.0))/(height/(0.0+width)))
+    xScale = deltaY/(deltaX+0.0)
     yScale = 1/xScale
     
     if xScale > yScale:
@@ -402,9 +402,20 @@ def visualizeTree(graphPanel, root):
 
         yCur = yCur - yBump
         
-    return None
+    return 
 
-class vizButton(Widget):
+class resetButton(Button):
+    g = ObjectProperty(GraphPanel())
+
+    def initialize(self, graphPanel):
+        self.text = "Reset vertex positions"
+        self.g = graphPanel
+    
+    def on_touch_down(self, touch):
+        if self.collide_point(touch.x, touch.y):
+            visualize(self.g)
+            
+class vizButton(Button):
     g = ObjectProperty(GraphPanel())
     
     def setGraph(self, graphPanel):
@@ -412,7 +423,7 @@ class vizButton(Widget):
 
     def on_touch_down(self, touch):
         if self.collide_point(touch.x, touch.y):
-            self.g.loadGraph("tinyEWDnc.txt")
+            self.g.loadGraph("graphExample.txt")
             self.g.setNamesVisible()
 
             visualize(self.g)
@@ -420,13 +431,14 @@ class vizButton(Widget):
 class TreeApp(App):
     def build(self):
         graphPanel = GraphPanel()
-
         btn = vizButton()
         btn.text = "hit me"
         btn.setGraph(graphPanel)
         GUI = BoxLayout()
-        GUI.add_widget(btn)
         GUI.add_widget(graphPanel)
+        GUI.add_widget(btn)
+
+        
         
 
 
