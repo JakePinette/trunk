@@ -88,7 +88,7 @@ class Vertex(Widget):
 
     def unSelect(self):
         self.selected = False
-        self.highlightObj.color = (1,1,1)
+        self.highlightObj.color = (0,0,0)
         if self.highlighted == False:
             self.remove_widget(self.highlightObj)
 
@@ -102,7 +102,7 @@ class Vertex(Widget):
             self.highlightObj.pos[0] = self.center_x - self.radius
             self.highlightObj.pos[1] = self.center_y - self.radius
 
-            self.highlighted = True
+        self.highlighted = True
 
     def unHighlight(self):
         self.highlighted = False
