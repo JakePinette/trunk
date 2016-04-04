@@ -13,7 +13,9 @@ from kivy.properties import ObjectProperty
 from kivy.lang import Builder
 from GraphPanel import GraphPanel
 from InfoPanel import InfoPanel
-#from ColorPopupM import ColorPopupM
+from SearchPanel import SearchPanel
+
+
 #loading the LayoutUI specifications
 Builder.load_file("LayoutUI.kv")
 
@@ -21,22 +23,33 @@ Builder.load_file("LayoutUI.kv")
 class Toolbar(TabbedPanel):
 
     infoPanel = ObjectProperty(InfoPanel(size_hint=(1, 0.8)))
+    searchPanel = ObjectProperty(SearchPanel(size_hint=(1, 1)))
     
     def Initalize(self):
-        btnfill = Button(text="placeholderoni", size_hint=(1,0.2))
+        btnfill = Button(text="Neighbourhood", size_hint=(1,0.2))
+        
         info = InfoPanel(size_hint=(1, 0.8))
         self.infoPanel = info
         box = BoxLayout(orientation='vertical')
         box.add_widget(info)
         box.add_widget(btnfill)
+
+        search = SearchPanel(size_hint=(1, 1))
+        self.searchPanel = search
+        
+        gbox = BoxLayout(orientation='vertical')
+        gbox.add_widget(search)
+
+        
         
         self.ids.Node.add_widget(box)
+
+        self.ids.Graph.add_widget(gbox)
         
         
 
 class TabbedPanelApp(App):
     def build(self):
-        btnTest = Button(text='attempt in python')
         TabbedPanel.add_widget(btntest)
         return Toolbar()
 

@@ -23,8 +23,8 @@ class InfoPanel(Widget):
     def __init__(self, **kwargs):
         
         super(InfoPanel, self).__init__(**kwargs)
-        self.vertexName = 'this is Node Name'
-        self.vertexTextInfo = 'This is Node info'
+        self.vertexName = ''
+        self.vertexTextInfo = ''
         self.vertexOutgoingEdges = 'This is outgoing Edge List'
         self.vertexIncomingEdges = 'This is the Incoming Edge List'
 
@@ -44,7 +44,7 @@ class InfoPanel(Widget):
             toV = e.getToVertex()
             StringOutgoing = StringOutgoing + str(fromV.getID())
             StringOutgoing = StringOutgoing + " -> "
-            StringOutgoing = StringOutgoing + str(toV.getID())+ '\n'
+            StringOutgoing = StringOutgoing + str(toV.getID())+ '  (Weight:' + str(e.getWeight()) + ')' + '\n'
             
         self.vertexOutgoingEdges = StringOutgoing
 
@@ -53,28 +53,30 @@ class InfoPanel(Widget):
             toV = e.getToVertex()
             StringIncoming = StringIncoming + str(fromV.getID())
             StringIncoming = StringIncoming + " -> "
-            StringIncoming = StringIncoming + str(toV.getID())+ '\n'
-
+            StringIncoming = StringIncoming + str(toV.getID())+ '  (Weight: ' + str(e.getWeight()) + ')' + '\n'
+        
+        
+    
         self.vertexIncomingEdges = StringIncoming
             
 
     def set_vertexName(self):
         self.vertexName = self.ids.nameBox.text 
         self.currentVertex.setName(self.vertexName)
-        print(self.currentVertex.getName())
+        #print(self.currentVertex.getName())
         
         
     def set_vertexTextInfo(self):
         self.vertexTextInfo = self.ids.infoBox.text
         self.currentVertex.setInfo(self.vertexTextInfo)
-        print(self.currentVertex.getInfo())
+        #print(self.currentVertex.getInfo())
 
     def set_vertexOutgoingEdges(self):
-        self.vertexOutgoingEdges = "Outgoing Edges Set"
+        self.vertexOutgoingEdges = ""
         #this is where getOutInfo() for outEdges
         
     def set_vertexIncomingEdges(self):
-        self.vertexIncomingEdges = "Incoming Edges Set"
+        self.vertexIncomingEdges = ""
         #this is where getInfo() for InEdges
 
 #----------------------------------------------------------------------------

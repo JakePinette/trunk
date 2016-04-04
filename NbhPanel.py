@@ -10,25 +10,21 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
 from GraphPanel import GraphPanel
 
-Builder.load_file('SearchPanel.kv')
+Builder.load_file('NbhPanel.kv')
 
-class SearchPanel(Widget):
-
+class NbhPanel(Widget):
+    
     currentVertex = ObjectProperty(Vertex())
     currentVertexNo = StringProperty()
-    
-    nextVertex = ObjectProperty(Vertex())
-    nextVertexNo = StringProperty()
+
+    nbhSize = StringProperty()
 
     workingGraph = ObjectProperty(GraphPanel())
 
-    path = StringProperty()
     
     def __init__(self, **kwargs):
-        super(SearchPanel, self).__init__(**kwargs)
-        self.currentVertexNo = "0"
-        self.nextVertexNo = "0"
-        self.path =  "Path Will Be Displayed Here"
+        super(NbhPanel, self).__init__(**kwargs)
+        currentVertexNo = ''
 
     def isInt(self, num):
         try: 
@@ -37,33 +33,19 @@ class SearchPanel(Widget):
         except ValueError:
             return False
 
-    def set_fromVertex(self, graph):
-        value = self.ids.fromBox.text
+    def set_NbhSize(self, graph):
+        value = self.ids.sizeBox.text
+        
         if self.isInt(value):
-            self.currentVertexNo = value
-            graphArray = graph.getVertexList()
-            self.currentVertex = graphArray[int(self.currentVertexNo)]
+            self.nbhSize = value
         else:
-            self.path = "non Integer value given please use Integer Values"
-
-    def set_toVertex(self, graph):
-        value = self.ids.toBox.text
-        if self.isInt(value):
-            self.nextVertexNo = value
-            graphArray = graph.getVertexList()
-            self.currentVertex = graphArray[int(self.currentVertexNo)]
-        else:
-            self.path = "non Integer value given please use Integer Values"
+            print("non Integer value given please use Integer Values")
 
     def set_workingGraph(self, graph):
         self.workingGraph = graph
 
-    def initialize(self, graph):
-        self.set_fromVertex(graph)
-        self.set_toVertex(graph)
         
-        
-class buildSearchPanel(App):
+class buildNbhPanel(App):
     def build(self):
         box = BoxLayout()
         graphPanel = GraphPanel()
@@ -78,13 +60,14 @@ class buildSearchPanel(App):
         graphPanel.addEdge(1, 0 ,2)
         graphPanel.addEdge(0, 3, 8)
         
-        search = SearchPanel()
-        search.set_workingGraph(graphPanel)
+        nbh = NbhPanel()
+        nbh.set_workingGraph(graphPanel)
         
-        box.add_widget(search)
+        box.add_widget(nbh)
         box.add_widget(graphPanel)
         
         return box
 
 if __name__ == '__main__':
-    buildSearchPanel().run()
+    buildNbhPanel().run()
+

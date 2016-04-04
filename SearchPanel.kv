@@ -7,30 +7,34 @@
         
         BoxLayout:
             size_hint: 1, 0.1
-            Button:
-                text: 'From: '
-                on_release: root.set_fromVertex(root.workingGraph)
+            Label:
+                text: 'From #: '
 
             TextInput:
                 id: fromBox
                 multiline: False
                 text: root.currentVertexNo
                 readonly:False
+                size_hint: 0.8, 0.8
 
             Label:
-                text: " -> "
-
-            Button:
-                text: 'To: '
-                on_release: root.set_toVertex(root.workingGraph)
-
+                text: 'To #: '
+                
             TextInput:
                 id: toBox
                 multiline: False
                 text: root.nextVertexNo
                 readonly: False
+                size_hint: 0.8, 0.8
 
         BoxLayout:
+            orientation: 'vertical'
+            
+            Button:
+                text: 'Search'
+                on_release: root.set_fromVertex(root.workingGraph)
+                on_release: root.set_toVertex(root.workingGraph)
+                size_hint: 1, 0.2
                 
             TextInput:
                 id: pathBox
