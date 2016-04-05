@@ -38,7 +38,7 @@ class InfoPanel(Widget):
         incoming = v.getIncomingEdges()
         StringOutgoing = ""
         StringIncoming = ""
-        
+
         for e in outgoing:
             fromV = e.getFromVertex()
             toV = e.getToVertex()

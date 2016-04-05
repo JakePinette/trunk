@@ -78,7 +78,21 @@ class SearchPanel(Widget):
     def doSearch(self, graph, fromN, toN):
         bfsearch = BellmanFord()
         self.listPath = bfsearch.findShortestPath(self.workingGraph, self.currentVertex.getID(), self.nextVertex.getID())
-
+        self.path = ''
+        total = 0
+        if len(self.listPath) == 0:
+            self.path = 'No Path Found'
+            return
+        for e in self.listPath:
+            fromV = e.getFromVertex()
+            toV = e.getToVertex()
+            self.path = self.path + str(fromV.getID())
+            self.path = self.path + " -> "
+            self.path = self.path + str(toV.getID()) + '  (Weight: ' + str(e.getWeight()) + ')' + '\n'
+            total = total + e.getWeight()
+        self.path = self.path + ' \nTotal Weight: ' + str(total)
+            
+        
     def performTask(self, graph, fromN, toN):
         if self.set_fromVertex(self.workingGraph) == False:
             return

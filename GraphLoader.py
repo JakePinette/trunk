@@ -1,6 +1,5 @@
 #code partially gotten from the kivy api
 
-
 from kivy.app import App
 from kivy.uix.floatlayout import FloatLayout
 from kivy.factory import Factory
@@ -19,9 +18,9 @@ from GraphPanel import GraphPanel
 from InfoPanel import InfoPanel
 from VertexPositionAlg import visualize
 from kivy.lang import Builder
-import os
+
 Builder.load_file("Editor.kv")
-	
+import os
 
 class LoadDialog(FloatLayout):
     load = ObjectProperty(None)

@@ -6,7 +6,6 @@ from kivy.properties import BooleanProperty, StringProperty
 from kivy.properties import ObjectProperty
 import Edge
 from kivy.lang import Builder
-Builder.load_file('GraphPanel.kv')
 
 class Highlight(Widget):
     color = ListProperty((0,0,0))

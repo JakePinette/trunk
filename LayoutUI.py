@@ -18,6 +18,7 @@ from SearchPanel import SearchPanel
 from VertexPositionAlg import resetButton
 from ColorPopupM import vertexColorButton, backgroundColorButton
 from NbhPanel import NbhPanel
+from GraphLoader import Root
 
 #loading the LayoutUI specifications
 Builder.load_file("LayoutUI.kv")
@@ -85,15 +86,15 @@ class BuildLayout(App):
         TopBar = BoxLayout(size_hint=(0.75, 1))
         #vvvv And contents of Top Bar vvvv
         btnOpenFile = Button(text='Open new File')
+        root = Root()
+        btnOpenFile.bind(on_release=root.show_load)
+
+
+        
         bgCol = backgroundColorButton(text='background Col')
         vertexCol = vertexColorButton(text='vertex Col')
         btnDisplay = Button(text='Display')
 
-
-
-        
-        btnHelp = Button(text='help')
-        btnHelp.bind(on_touch_down=helpWin.open)
         
         #vvvv this is the Tabbed Box on the right side vvvv
         ToolBar = Toolbar(size_hint=(0.25, 1))
@@ -111,7 +112,6 @@ class BuildLayout(App):
 
 
         #vvvv GraphPanel settings vvvv
-        graphPanel.loadGraph("graphExample.txt")
         graphPanel.setNamesVisible()
         #^^^^ GraphPanel settings ^^^^ 
    
@@ -130,11 +130,12 @@ class BuildLayout(App):
         TopBar.add_widget(btnOpenFile)
         TopBar.add_widget(bgCol)
         TopBar.add_widget(vertexCol)
-        TopBar.add_widget(btnHelp)
+
         
         ToolBar.Initalize(graphPanel)
         bgCol.initialize(graphPanel)
         vertexCol.initialize(graphPanel)
+        root.set_graph(graphPanel)
         
         graphPanel.setDataColector(ToolBar.infoPanel)
 

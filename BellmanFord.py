@@ -38,6 +38,8 @@ class BellmanFord():
             nodeInFocus.highlight()
             if nodeInFocus.getID() == startNodeIndex:
                 break
+            if nodeInFocus.getBFParent() == None:
+                return []
             edgeInFocus = nodeInFocus.getBFParent()
             
             nodeInFocus = edgeInFocus.getFromVertex()
