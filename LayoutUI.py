@@ -45,6 +45,7 @@ class Toolbar(TabbedPanel):
         
         resetBtn.initialize(graph)
         nbhPanel.initialize(graph)
+        search.initialize(graph)
         
         gbox = BoxLayout(orientation='vertical')
         gbox.add_widget(search)

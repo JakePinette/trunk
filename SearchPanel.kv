@@ -13,7 +13,7 @@
             TextInput:
                 id: fromBox
                 multiline: False
-                text: root.currentVertexNo
+                #text: root.currentVertexNo
                 readonly:False
                 size_hint: 0.8, 0.8
 
@@ -24,7 +24,7 @@
             TextInput:
                 id: toBox
                 multiline: False
-                text: root.nextVertexNo
+                #text: root.nextVertexNo
                 readonly: False
                 size_hint: 0.8, 0.8
 
@@ -33,9 +33,7 @@
             
             Button:
                 text: 'Search'
-                on_release: root.set_fromVertex(root.workingGraph)
-                on_release: root.set_toVertex(root.workingGraph)
-                on_release: root.doSearch(root.workingGraph, root.currentVertex, root.nextVertex)
+                on_release: root.performTask(root.workingGraph, root.currentVertex, root.nextVertex) 
                 size_hint: 1, 0.2
                 
             TextInput:

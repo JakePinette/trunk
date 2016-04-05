@@ -7,6 +7,13 @@ class BellmanFord():
     def findShortestPath(self, Graph, startNodeIndex, endNodeIndex):
         path = []
         c = True
+        numVert = len(Graph.listOfVertices)
+
+        if startNodeIndex < 0 or startNodeIndex >= numVert:
+            return False
+        if endNodeIndex < 0 or endNodeIndex >= numVert:
+            return False
+        
         nodeInFocus = Graph.getVertex(endNodeIndex)
         Graph.clearHighlights()
         nodeInFocus.highlight()
@@ -32,6 +39,7 @@ class BellmanFord():
             if nodeInFocus.getID() == startNodeIndex:
                 break
             edgeInFocus = nodeInFocus.getBFParent()
+            
             nodeInFocus = edgeInFocus.getFromVertex()
             path.append(edgeInFocus)
             globalTraversalCost = globalTraversalCost+1

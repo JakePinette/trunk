@@ -42,8 +42,13 @@ class SearchPanel(Widget):
 
     def set_fromVertex(self, graph):
         value = self.ids.fromBox.text
+        self.currentVertexNo = value
         if self.isInt(value):
-            self.currentVertexNo = value
+            if  int(self.currentVertexNo) < 0 or int(self.currentVertexNo) >= len(graph.listOfVertices):
+                self.path = "invalid Index entered"
+                print len(graph.listOfVertices)
+                return False
+            
             graphArray = graph.getVertexList()
             self.currentVertex = graphArray[int(self.currentVertexNo)]
         else:
@@ -51,10 +56,15 @@ class SearchPanel(Widget):
 
     def set_toVertex(self, graph):
         value = self.ids.toBox.text
+        self.nextVertexNo = value
         if self.isInt(value):
-            self.nextVertexNo = value
+            if  int(self.nextVertexNo) < 0 or int(self.nextVertexNo) >= len(graph.listOfVertices):
+                self.path = "invalid Index entered"
+                print len(graph.listOfVertices)
+                return False
+            
             graphArray = graph.getVertexList()
-            self.currentVertex = graphArray[int(self.currentVertexNo)]
+            self.nextVertex = graphArray[int(self.nextVertexNo)]
         else:
             self.path = "non Integer value given please use Integer Values"
 
@@ -62,12 +72,21 @@ class SearchPanel(Widget):
         self.workingGraph = graph
 
     def initialize(self, graph):
-        self.set_fromVertex(graph)
-        self.set_toVertex(graph)
+        self.workingGraph = graph
+        
         
     def doSearch(self, graph, fromN, toN):
         bfsearch = BellmanFord()
         self.listPath = bfsearch.findShortestPath(self.workingGraph, self.currentVertex.getID(), self.nextVertex.getID())
+
+    def performTask(self, graph, fromN, toN):
+        if self.set_fromVertex(self.workingGraph) == False:
+            return
+        if self.set_toVertex(self.workingGraph) == False:
+            return
+        self.doSearch(self.workingGraph, self.currentVertex, self.nextVertex)
+        print self.currentVertex.getID()
+        print self.nextVertex.getID()
         
 class buildSearchPanel(App):
     def build(self):
@@ -83,7 +102,7 @@ class buildSearchPanel(App):
         graphPanel.addEdge(1, 2, 5)
         graphPanel.addEdge(1, 0 ,2)
         graphPanel.addEdge(0, 3, 8)
-        
+        graphPanel.setNamesVisible()
         search = SearchPanel()
         search.set_workingGraph(graphPanel)
         
